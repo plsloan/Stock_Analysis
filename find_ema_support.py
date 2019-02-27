@@ -12,8 +12,10 @@ def main():
     # nasdaq_symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
     # nyse_symbols = pandas.read_csv('Data/NYSE.csv')['Symbol']
     my_symbols = ['RMD', 'LXRX', 'MPX', 'PER', 'GOLD', 'TRI', 'KEN', 'ET', 'LYG', 'MUFG', 'VIV', 'CNHI', 'BSBR']
-
-
+    
+    macd_df = pandas.read_csv('Data/MACD_Crossover/' + str(datetime.datetime.now().strftime('%Y')) + '-' + str(datetime.datetime.now().strftime('%m')) + '-' + str(datetime.datetime.now().strftime('%d')) + '.csv')
+    macd_symbols = macd_df['Symbol'].tolist()
+    
     # dates
     today = datetime.datetime.now()
     start = today - datetime.timedelta(days=365)
@@ -23,7 +25,9 @@ def main():
     # getSuggestedNYSE(start, end, nyse_symbols)
     # today = datetime.datetime.now()
     # getSuggestedNASDAQ(start, end, nasdaq_symbols)
-    getMySymbols(start, end, my_symbols)
+    # getMySymbols(start, end, my_symbols)
+    getMySymbols(start, end, macd_symbols)
+
     
 
 # get stocks
