@@ -34,17 +34,17 @@ def main():
             if i == 0:
                 symbols.append(row[i].text.strip())
             elif i == 2:
-                open_price.append(row[i].text.strip())
+                open_price.append(float(row[i].text.strip()))
             elif i == 3:
-                high_price.append(row[i].text.strip())
+                high_price.append(float(row[i].text.strip()))
             elif i == 4:
-                low_price.append(row[i].text.strip())
+                low_price.append(float(row[i].text.strip()))
             elif i == 5:
-                close_price.append(row[i].text.strip())
+                close_price.append(float(row[i].text.strip()))
             elif i == 6:
-                volume.append(row[i].text.strip())
+                volume.append(int(row[i].text.strip()))
             elif i == 7:
-                percent_change.append(row[i].text.strip())
+                percent_change.append(float(row[i].text.strip()[:-1]))
     
     df = pandas.DataFrame()
     df['Symbol'] = symbols
@@ -64,6 +64,8 @@ def main():
     with open('Data/MACD_Crossover/' + year + '-' + month + '-' + day + '.csv', 'w') as filetowrite:#'___' + hour + '-' + minute + '.csv', 'w') as filetowrite:
         filetowrite.write(csv_content)
         filetowrite.close()
+
+    return df
 
 
 if __name__ == '__main__':
