@@ -1,10 +1,3 @@
-import time
-import pandas
-import requests
-import datetime
-import numpy as np
-import matplotlib.pyplot as plt
-from itertools import cycle, islice
 from pandas_datareader import data as web
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 
@@ -119,5 +112,7 @@ def printSuggestedSymbols(start, end, symbols):
         current_index = current_index + 1
         progress_bar.update(current_index)
     progress_bar.finish()
+    print()
     for stock in results:
         print(stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'])#, stock['RSI'])
+    input('\nPress Enter to exit...')

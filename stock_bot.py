@@ -1,12 +1,12 @@
 import pandas
 import datetime
-import numpy as np
+import warnings
 import matplotlib.pyplot as plt
-from itertools import cycle, islice
 from pandas_datareader import data as web
 
+import scrape_MACD_crossover
 from get_indicators import getBollingerBand, getEMA, getMACD, getRSI
-
+warnings.simplefilter("ignore")
 
 def main():
     print()
@@ -14,10 +14,22 @@ def main():
     # get data from stock exchanges
     # nasdaq_symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
     # nyse_symbols = pandas.read_csv('Data/NYSE.csv')['Symbol']
+    # my_symbols = ['RMD', 'LXRX', 'MPX', 'PER', 'GOLD', 'TRI', 'KEN', 'ET', 'LYG', 'MUFG', 'VIV', 'CNHI', 'BSBR']
+    macd_df = scrape_MACD_crossover.main()
+    macd_under25 = macd_df[macd_df['Close'] < 25]
+
+    print('//---------- List of MACD Crossover Stocks Under $25 ----------\\\\')
+    for stock in macd_under25['Symbol']:
+        print(stock)
+    print('\n')
 
     # user input
     ticker = input('Enter ticker to examine: ')
-    days = int(input('Over how many days: '))
+    days = input('Over how many days: ')
+    if days == '':
+        days = 365
+    else:
+        days = int(days)
     show_data = input('Show data? (y/n) ').lower()
     show_analysis = input('Show analysis? (y/n) ').lower()
 
@@ -43,22 +55,17 @@ def main():
     analysis_bool = False
     advice_bool = False
 
-    if show_data == 'y':
-        data_bool = True
-
+    if show_data == 'y': data_bool = True
     if show_analysis == 'y':
         show_advice = input('Show advice? (y/n) ').lower()
         analysis_bool = True
-        if show_advice == 'y':
-            advice_bool = True
-    
+        if show_advice == 'y': advice_bool = True
     show_plot = input('Show graph? (y/n) ').lower()
-    if show_plot == 'y':
-        plot_bool = True
+    if show_plot == 'y': plot_bool = True
         
     if data_bool: outputData(data, days=days)
     if analysis_bool: analysis = outputAnalysis(data, days=days)
-    if advice_bool: outputAdvice(data, analysis, days=days) 
+    if advice_bool: outputAdvice(analysis) 
     if plot_bool: showPlot(data, days=days)
 
 
@@ -144,7 +151,7 @@ def outputAnalysis(data, days=0):
     print()
     print('---------- Analysis ----------')
 
-    # Bollinger Location: Above/Below/On center
+    # Bollinger Location: top / bottom
     boll_location = ''
     if (data['Close'][-1] > data['Boll. Center'][-1]):
         print('Bollinger Location: Top half')
@@ -152,10 +159,8 @@ def outputAnalysis(data, days=0):
     elif (data['Close'][-1] < data['Boll. Center'][-1]):
         print('Bollinger Location: Bottom half')
         boll_location = 'bottom'
-    else:
-        pass
 
-    # In Bollinger Bands: Yes / Overbought / Oversold
+    # In Bollinger Bands: Yes / Overbought / Oversold / ?
     in_band = ''
     if (data['High'][-1] > data['Boll. Upper'][-1] and data['Low'][-1] < data['Boll. Lower'][-1]):
         print('In Bollinger Bands: Narrow bands or high volatility')
@@ -170,7 +175,7 @@ def outputAnalysis(data, days=0):
         print('In Bollinger Bands: Yes')
         in_band = 'yes'
 
-    # MACD Location: Greater/Less than 0
+    # MACD Location: Greater/Less/Equals(1/-1/0) than 0
     macd_location = ''
     if (data['MACD'][-1] > 0):
         print('MACD Location: Greater than 0')
@@ -182,7 +187,7 @@ def outputAnalysis(data, days=0):
         print('MACD Location: Equals 0')
         macd_location = '0'
 
-    # Recent MACD Crossover: Yes/No
+    # Recent MACD Crossover: Buy/Sell/No
     recent_crossover = False
     if (data['MACD'][-1] > data['Signal'][-1]):
         for i in range(2, 6):
@@ -228,15 +233,28 @@ def outputAnalysis(data, days=0):
     return [boll_location, in_band, macd_location, recent_crossover, ema_support, rsi_support]
 
 # description here
-def outputAdvice(data, analysis, days=0):
-    # analysis
-    # boll_location, in_band, macd_location, recent_crossover, ema_support, rsi_support
+def outputAdvice(analysis):
     print()    
     print('----------- Advice -----------')
-    
-
-    pass
-    
+    score = getScore(analysis)
+    if score >= 7:
+        print('Advice: Buy')
+    elif score < 7 and score > 3:
+        print('Advice: Watch')
+    else:
+        print('Advice: Sell')
+def getScore(analysis):
+    # boll_location, in_band, macd_location, recent_crossover, ema_support, rsi_support
+    score = 0
+    if analysis[0].lower() == 'bottom':                     score = score + 1
+    if analysis[1].lower() == 'yes':                        score = score + 1
+    elif analysis[1].lower() == 'oversold':                 score = score + 2
+    if analysis[2] == -1 and analysis[3].lower() == 'buy':  score = score + 4
+    elif analysis[3].lower() == 'buy':                      score = score + 2
+    if analysis[4].lower() == 'yes':                        score = score + 1
+    if analysis[5].lower() == 'oversold':                   score = score + 3
+    elif analysis[5].lower() == 'normal':                   score = score + 2  
+    return score    
 
 
 # -------------- MAIN ------------- #

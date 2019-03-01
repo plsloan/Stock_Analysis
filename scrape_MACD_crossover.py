@@ -1,3 +1,4 @@
+import os
 import numpy
 import pandas
 from requests import get
@@ -56,11 +57,18 @@ def main():
     df['% Change'] = percent_change
 
     csv_content = df.to_csv(index=False)
+    if '\r\n' in csv_content:
+        csv_content = csv_content.replace('\r\n', '\n')
+    if '\n\n' in csv_content:
+        csv_content = csv_content.replace('\n\n', '\n')
     year = str(datetime.now().strftime('%Y'))
     month = str(datetime.now().strftime('%m'))
     day = str(datetime.now().strftime('%d'))
     hour = str(datetime.now().strftime('%H'))
     minute = str(datetime.now().strftime('%M'))
+
+    if not os.path.exists('Data/MACD_Crossover/'):
+        os.makedirs('Data/MACD_Crossover/')
     with open('Data/MACD_Crossover/' + year + '-' + month + '-' + day + '.csv', 'w') as filetowrite:#'___' + hour + '-' + minute + '.csv', 'w') as filetowrite:
         filetowrite.write(csv_content)
         filetowrite.close()

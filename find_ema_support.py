@@ -1,15 +1,8 @@
-import time
 import pandas
-import requests
 import datetime
-import numpy as np
-import matplotlib.pyplot as plt
-from itertools import cycle, islice
-from pandas_datareader import data as web
-from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 
-from get_symbols import getSuggestedNASDAQ, getSuggestedNYSE, getSuggestedSymbols, printSuggestedNASDAQ, printSuggestedNYSE, printSuggestedSymbols
 import scrape_MACD_crossover 
+from get_symbols import getSuggestedNASDAQ, getSuggestedNYSE, getSuggestedSymbols, printSuggestedNASDAQ, printSuggestedNYSE, printSuggestedSymbols
 
 def main():
     # nasdaq_symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
