@@ -1,6 +1,7 @@
 import pandas
 import datetime
 import warnings
+import webbrowser as browser
 import matplotlib.pyplot as plt
 from pandas_datareader import data as web
 
@@ -23,50 +24,55 @@ def main():
         print(stock)
     print('\n')
 
-    # user input
-    ticker = input('Enter ticker to examine: ')
-    days = input('Over how many days: ')
-    if days == '':
-        days = 365
-    else:
-        days = int(days)
-    show_data = input('Show data? (y/n) ').lower()
-    show_analysis = input('Show analysis? (y/n) ').lower()
+    decision = 'y'
+    while decision.lower()[0] == 'y':
+        # user input
+        ticker = input('Enter ticker to examine: ')
+        days = input('Over how many days: ')
+        if days == '':
+            days = 365
+        else:
+            days = int(days)
+        show_data = input('Show data? (y/n) ').lower()
+        show_analysis = input('Show analysis? (y/n) ').lower()
 
-    # dates
-    today = datetime.datetime.now()
-    start = today - datetime.timedelta(days=days)
-    end = today
+        # dates
+        today = datetime.datetime.now()
+        start = today - datetime.timedelta(days=days)
+        end = today
 
-    # get data
-    data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
-    analysis = ''
+        # get data
+        data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
+        analysis = ''
 
-    # indicator calculations
-    data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
-    data['MACD'], data['Signal'] = getMACD(data)
-    data['RSI'] = getRSI(data)
-    data['EMA 50'] = getEMA(data, 50)
-    data['EMA 200'] = getEMA(data, 200)                                                         # a little off
-    
-    # show stuff
-    data_bool = False
-    plot_bool = False
-    analysis_bool = False
-    advice_bool = False
-
-    if show_data == 'y': data_bool = True
-    if show_analysis == 'y':
-        show_advice = input('Show advice? (y/n) ').lower()
-        analysis_bool = True
-        if show_advice == 'y': advice_bool = True
-    show_plot = input('Show graph? (y/n) ').lower()
-    if show_plot == 'y': plot_bool = True
+        # indicator calculations
+        data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
+        data['MACD'], data['Signal'] = getMACD(data)
+        data['RSI'] = getRSI(data)
+        data['EMA 50'] = getEMA(data, 50)
+        data['EMA 200'] = getEMA(data, 200)                                                         # a little off
         
-    if data_bool: outputData(data, days=days)
-    if analysis_bool: analysis = outputAnalysis(data, days=days)
-    if advice_bool: outputAdvice(analysis) 
-    if plot_bool: showPlot(data, days=days)
+        # show stuff
+        data_bool = False
+        plot_bool = False
+        analysis_bool = False
+        advice_bool = False
+
+        if show_data == 'y': data_bool = True
+        if show_analysis == 'y':
+            show_advice = input('Show advice? (y/n) ').lower()
+            analysis_bool = True
+            if show_advice == 'y': advice_bool = True
+        show_plot = input('Show graph? (y/n) ').lower()
+        if show_plot == 'y': plot_bool = True
+            
+        if data_bool: outputData(data, days=days)
+        if analysis_bool: analysis = outputAnalysis(data, days=days)
+        if advice_bool: outputAdvice(analysis) 
+        # if plot_bool: showPlot(data, days=days)
+        if plot_bool: browser.open('https://finance.yahoo.com/chart/' + ticker)
+
+        decision = input('\nAnalyze another stock (y/n)? ')
 
 
 # shows plot for price info, MACD, and RSI
