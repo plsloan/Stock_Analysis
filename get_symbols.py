@@ -1,9 +1,11 @@
+import pandas 
 from pandas_datareader import data as web
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 
 from get_indicators import getEMA, getRSI
 
-def getSuggestedNYSE(start, end, symbols):
+def getSuggestedNYSE(start, end):
+    symbols = pandas.read_csv('Data/NYSE.csv')['Symbol']
     current_index = 0
     results = []
     for ticker in symbols:
@@ -19,7 +21,8 @@ def getSuggestedNYSE(start, end, symbols):
     for stock in results:
         stocks.append([stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI']])
     return stocks
-def getSuggestedNASDAQ(start, end, symbols):
+def getSuggestedNASDAQ(start, end):
+    symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
     current_index = 0
     results = []
     for ticker in symbols:
@@ -35,7 +38,8 @@ def getSuggestedNASDAQ(start, end, symbols):
     for stock in results:
         stocks.append([stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI']])
     return stocks
-def getSuggestedSymbols(start, end, symbols):
+def getSuggestedSymbols(start, end):
+    symbols = ['RMD', 'LXRX', 'MPX', 'PER', 'GOLD', 'TRI', 'KEN', 'ET', 'LYG', 'MUFG', 'VIV', 'CNHI', 'BSBR']
     current_index = 0
     results = []
     for ticker in symbols:
@@ -51,7 +55,8 @@ def getSuggestedSymbols(start, end, symbols):
     for stock in results:
         stocks.append([stock['Ticker'], stock['EMA - 50'], stock['EMA - 200']])#, stock['RSI'])
     return stocks
-def printSuggestedNYSE(start, end, symbols):
+def printSuggestedNYSE(start, end):
+    symbols = pandas.read_csv('Data/NYSE.csv')['Symbol']
     current_index = 0
     widgets = [Bar(marker='=',left='[',right=']'), ' ', Percentage(), ' ', ETA(), ' ', FileTransferSpeed()]
     progress_bar = ProgressBar(widgets=widgets, maxval=len(symbols))
@@ -72,7 +77,8 @@ def printSuggestedNYSE(start, end, symbols):
     progress_bar.finish()
     for stock in results:
         print(stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI'])
-def printSuggestedNASDAQ(start, end, symbols):
+def printSuggestedNASDAQ(start, end):
+    symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
     current_index = 0
     widgets = [Bar(marker='=',left='[',right=']'), ' ', Percentage(), ' ', ETA(), ' ', FileTransferSpeed()]
     progress_bar = ProgressBar(widgets=widgets, maxval=len(symbols))
@@ -93,7 +99,8 @@ def printSuggestedNASDAQ(start, end, symbols):
     progress_bar.finish()
     for stock in results:
         print(stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI'])
-def printSuggestedSymbols(start, end, symbols):
+def printSuggestedSymbols(start, end):
+    symbols = ['RMD', 'LXRX', 'MPX', 'PER', 'GOLD', 'TRI', 'KEN', 'ET', 'LYG', 'MUFG', 'VIV', 'CNHI', 'BSBR']
     current_index = 0
     widgets = [Bar(marker='=',left='[',right=']'), ' ', Percentage(), ' ', ETA(), ' ', FileTransferSpeed()]
     progress_bar = ProgressBar(widgets=widgets, maxval=len(symbols))

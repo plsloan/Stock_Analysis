@@ -13,7 +13,7 @@ def main():
     # get data from stock exchanges
     # nasdaq_symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
     # nyse_symbols = pandas.read_csv('Data/NYSE.csv')['Symbol']
-    # my_symbols = ['RMD', 'LXRX', 'MPX', 'PER', 'GOLD', 'TRI', 'KEN', 'ET', 'LYG', 'MUFG', 'VIV', 'CNHI', 'BSBR']
+    # my_symbols = 
     macd_df = scrape_MACD_crossover.main()
     macd_under25 = macd_df[macd_df['Close'] < 25]
 
