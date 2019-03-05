@@ -1,9 +1,15 @@
 import numpy
 
+def getSMA(data, span):
+    return data['Close'].mean()
+def getSMA_set(data, span):
+    return data['Close'].rolling(span, min_periods=1).mean()
 def getEMA(data, span):
     return data['Close'].ewm(span=span, min_periods=0, adjust=False, ignore_na=True).mean().iloc[-1]
 def getEMA_set(data, span):
     return data['Close'].ewm(span=span, min_periods=0, adjust=False, ignore_na=True).mean()
+def getMomentum(data, span):
+    return data['Close'].iloc[-1]/data['Close'].iloc[-(span+1)] - 1
 def getRSI(data):
     series = data['Close']
     period = 14

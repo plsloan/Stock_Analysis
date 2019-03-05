@@ -6,12 +6,10 @@ import matplotlib.pyplot as plt
 from pandas_datareader import data as web
 
 import scrape_MACD_crossover
-from get_indicators import getBollingerBand, getEMA, getMACD, getRSI
+from get_indicators import *
 warnings.simplefilter("ignore")
 
 def main():
-    print()
-
     # get data from stock exchanges
     # nasdaq_symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
     # nyse_symbols = pandas.read_csv('Data/NYSE.csv')['Symbol']
@@ -19,61 +17,68 @@ def main():
     macd_df = scrape_MACD_crossover.main()
     macd_under25 = macd_df[macd_df['Close'] < 25]
 
-    print('//---------- List of MACD Crossover Stocks Under $25 ----------\\\\')
-    for stock in macd_under25['Symbol']:
-        print(stock)
-    print('\n')
-
     decision = 'y'
-    while decision.lower()[0] == 'y':
-        # user input
-        ticker = input('Enter ticker to examine: ')
-        days = input('Over how many days: ')
-        if days == '':
-            days = 365
-        else:
-            days = int(days)
-        show_data = input('Show data? (y/n) ').lower()
-        show_analysis = input('Show analysis? (y/n) ').lower()
+    while decision.lower()[0] == 'y' or decision.lower() == 'all':
+        if decision.lower()[0] == 'y':
+            print('\n//---------- List of MACD Crossover Stocks Under $25 ----------\\\\')
+            for stock in macd_under25['Symbol']:
+                print(stock)
+            print('\n')
 
-        # dates
-        today = datetime.datetime.now()
-        start = today - datetime.timedelta(days=days)
-        end = today
+            # user input
+            ticker = input('Enter ticker to examine: ')
+            days = input('Over how many days: ')
+            if days == '':
+                days = 365
+            else:
+                days = int(days)
+            show_data = input('Show data? (y/n) ').lower()
+            show_analysis = input('Show analysis? (y/n) ').lower()
+            show_plot = input('Show graph? (y/n) ').lower()
 
-        # get data
-        data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
-        analysis = ''
+            # dates
+            today = datetime.datetime.now()
+            start = today - datetime.timedelta(days=days)
+            end = today
 
-        # indicator calculations
-        data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
-        data['MACD'], data['Signal'] = getMACD(data)
-        data['RSI'] = getRSI(data)
-        data['EMA 50'] = getEMA(data, 50)
-        data['EMA 200'] = getEMA(data, 200)                                                         # a little off
-        
-        # show stuff
-        data_bool = False
-        plot_bool = False
-        analysis_bool = False
-        advice_bool = False
+            # get data
+            data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
 
-        if show_data == 'y': data_bool = True
-        if show_analysis == 'y':
-            show_advice = input('Show advice? (y/n) ').lower()
-            analysis_bool = True
-            if show_advice == 'y': advice_bool = True
-        show_plot = input('Show graph? (y/n) ').lower()
-        if show_plot == 'y': plot_bool = True
+            # indicator calculations
+            data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
+            data['MACD'], data['Signal'] = getMACD(data)
+            data['RSI'] = getRSI(data)
+            data['EMA 50'] = getEMA(data, 50)
+            data['EMA 200'] = getEMA(data, 200)                                                         # a little off
             
-        if data_bool: outputData(data, days=days)
-        if analysis_bool: analysis = outputAnalysis(data, days=days)
-        if advice_bool: outputAdvice(analysis) 
-        # if plot_bool: showPlot(data, days=days)
-        if plot_bool: browser.open('https://finance.yahoo.com/chart/' + ticker)
+            # show stuff
+            data_bool = False
+            plot_bool = False
+            analysis_bool = False
 
-        decision = input('\nAnalyze another stock (y/n)? ')
+            if show_data == 'y':        data_bool = True
+            if show_analysis == 'y':    analysis_bool = True
+            if show_plot == 'y':        plot_bool = True
+                
+            if data_bool: outputData(data, days=days)
+            if analysis_bool: outputAnalysis(data, ticker, days=days)
+            # if plot_bool: showPlot(data, days=days)
+            if plot_bool: browser.open('https://finance.yahoo.com/chart/' + ticker)
 
+            decision = input('\nAnalyze another stock (y/n)? ')
+        elif decision.lower() == 'all':
+            for ticker in macd_under25['Symbol']:
+                data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
+                
+                # indicator calculations
+                data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
+                data['MACD'], data['Signal'] = getMACD(data)
+                data['RSI'] = getRSI(data)
+                data['EMA 50'] = getEMA(data, 50)
+                data['EMA 200'] = getEMA(data, 200)                                                         # a little off
+
+                outputAnalysis(data, ticker, days=days)
+            decision = input('\nAnalyze another stock (y/n)? ')
 
 # shows plot for price info, MACD, and RSI
 def showPlot(data, days=0):
@@ -153,9 +158,9 @@ def outputData(data, days=0):
         print()
 
 # prints analysis and returns values
-def outputAnalysis(data, days=0):
+def outputAnalysis(data, ticker, days=0):
     print()
-    print('---------- Analysis ----------')
+    print('---------- ' + ticker.upper() + ' Analysis ----------')
 
     # Bollinger Location: top / bottom
     boll_location = ''
@@ -236,12 +241,13 @@ def outputAnalysis(data, days=0):
         print('RSI: Normal')
         rsi_support = 'normal'
 
-    return [boll_location, in_band, macd_location, recent_crossover, ema_support, rsi_support]
+    # Udacity indicators
+    if in_band == 'oversold' and macd_location == -1 and recent_crossover == 'no':
+        print("Udacity: Check out this stock")
+    else:
+        print("Udacity: Nah fam")
 
-# description here
-def outputAdvice(analysis):
-    print()    
-    print('----------- Advice -----------')
+    analysis = [boll_location, in_band, macd_location, recent_crossover, ema_support, rsi_support]
     score = getScore(analysis)
     if score >= 7:
         print('Advice: Buy')
