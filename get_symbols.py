@@ -23,44 +23,6 @@ def getSuggestedNYSE(start, end):
     for stock in results:
         stocks.append([stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI']])
     return stocks
-def getSuggestedNASDAQ(start, end):
-    symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
-    current_index = 0
-    results = []
-    for ticker in symbols:
-        data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
-        if getEMA(data, 50) > getEMA(data, 200) and getRSI(data) < 30:
-            results.append({
-                'Ticker' : ticker, 
-                'EMA - 50' : getEMA(data, 50), 
-                'EMA - 200' : getEMA(data, 200), 
-                'RSI' : getRSI(data)})
-        current_index = current_index + 1
-    stocks = []
-    for stock in results:
-        stocks.append([stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI']])
-    return stocks
-def getSuggestedSymbols(start, end):
-    symbols = ['RMD', 'LXRX', 'MPX', 'PER', 'GOLD', 'TRI', 'KEN', 'ET', 'LYG', 'MUFG', 'VIV', 'CNHI', 'BSBR']
-    current_index = 0
-    results = []
-    for ticker in symbols:
-        data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
-        if getEMA(data, 50) > getEMA(data, 200): # and getRSI(data) < 30:
-            results.append({
-                'Ticker' : ticker, 
-                'EMA - 50' : getEMA(data, 50), 
-                'EMA - 200' : getEMA(data, 200)})#, 
-                #'RSI' : getRSI(data)})
-        current_index = current_index + 1
-    stocks = []
-    for stock in results:
-        stocks.append([stock['Ticker'], stock['EMA - 50'], stock['EMA - 200']])#, stock['RSI'])
-    return stocks
-def getRobinhoodSymbols():
-    login = robinhood.login('phillipsloan24@gmail.com','54bR&Srkm7EU')
-    my_stocks = robinhood.build_holdings()
-    return list(my_stocks.keys())
 def printSuggestedNYSE(start, end):
     symbols = pandas.read_csv('Data/NYSE.csv')['Symbol']
     current_index = 0
@@ -83,6 +45,23 @@ def printSuggestedNYSE(start, end):
     progress_bar.finish()
     for stock in results:
         print(stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI'])
+def getSuggestedNASDAQ(start, end):
+    symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
+    current_index = 0
+    results = []
+    for ticker in symbols:
+        data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
+        if getEMA(data, 50) > getEMA(data, 200) and getRSI(data) < 30:
+            results.append({
+                'Ticker' : ticker, 
+                'EMA - 50' : getEMA(data, 50), 
+                'EMA - 200' : getEMA(data, 200), 
+                'RSI' : getRSI(data)})
+        current_index = current_index + 1
+    stocks = []
+    for stock in results:
+        stocks.append([stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI']])
+    return stocks
 def printSuggestedNASDAQ(start, end):
     symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
     current_index = 0
@@ -105,6 +84,23 @@ def printSuggestedNASDAQ(start, end):
     progress_bar.finish()
     for stock in results:
         print(stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI'])
+def getSuggestedSymbols(start, end):
+    symbols = ['RMD', 'LXRX', 'MPX', 'PER', 'GOLD', 'TRI', 'KEN', 'ET', 'LYG', 'MUFG', 'VIV', 'CNHI', 'BSBR']
+    current_index = 0
+    results = []
+    for ticker in symbols:
+        data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
+        if getEMA(data, 50) > getEMA(data, 200): # and getRSI(data) < 30:
+            results.append({
+                'Ticker' : ticker, 
+                'EMA - 50' : getEMA(data, 50), 
+                'EMA - 200' : getEMA(data, 200)})#, 
+                #'RSI' : getRSI(data)})
+        current_index = current_index + 1
+    stocks = []
+    for stock in results:
+        stocks.append([stock['Ticker'], stock['EMA - 50'], stock['EMA - 200']])#, stock['RSI'])
+    return stocks
 def printSuggestedSymbols(start, end):
     symbols = ['RMD', 'LXRX', 'MPX', 'PER', 'GOLD', 'TRI', 'KEN', 'ET', 'LYG', 'MUFG', 'VIV', 'CNHI', 'BSBR']
     current_index = 0
@@ -129,6 +125,10 @@ def printSuggestedSymbols(start, end):
     for stock in results:
         print(stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'])#, stock['RSI'])
     input('\nPress Enter to exit...')
+def getRobinhoodSymbols():
+    login = robinhood.login('phillipsloan24@gmail.com','54bR&Srkm7EU')
+    my_stocks = robinhood.build_holdings()
+    return list(my_stocks.keys())
 def printRobinhoodSymbols():
     print('\n----------------------------------- Robinhood Symbols -----------------------------------')
     login = robinhood.login('phillipsloan24@gmail.com','54bR&Srkm7EU')
