@@ -7,13 +7,14 @@ from pandas_datareader import data as web
 
 import scrape_MACD_crossover
 from get_indicators import *
+from get_symbols import getRobinhoodSymbols
 warnings.simplefilter("ignore")
 
 def main():
     # get data from stock exchanges
     # nasdaq_symbols = pandas.read_csv('Data/NASDAQ.csv')['Symbol']
     # nyse_symbols = pandas.read_csv('Data/NYSE.csv')['Symbol']
-    # my_symbols = 
+    # my_symbols = getRobinhoodSymbols()
     macd_df = scrape_MACD_crossover.main()
     macd_under25 = macd_df[macd_df['Close'] < 25]
 
