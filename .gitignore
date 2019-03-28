@@ -1,6 +1,9 @@
 # my stuff
-Data/
-dist/Data
+Data/**
+dist/Data/**
+!Data/NASDAQ/_NASDAQ.csv
+!Data/NYSE/_NYSE.csv
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -61,5 +64,3 @@ docs/_build/
 
 # PyBuilder
 target/
-
-*.csv
