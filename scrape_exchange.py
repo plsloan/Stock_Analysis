@@ -62,12 +62,13 @@ def scrape_historical_data(tickers, exchange):
         except:
             failed_pull.append(ticker)
     # write failed pulls
-    content = 'Symbol\n'
-    f = open(path + 'failed_pulls.csv','w')
-    for ticker in failed_pull:
-        content = content + ticker + '\n'
-    f.write(content)
-    f.close()
+    if len(failed_pull) > 0:
+        content = 'Symbol\n'
+        f = open(path + '_failed_pulls.csv','w')
+        for ticker in failed_pull:
+            content = content + ticker + '\n'
+        f.write(content)
+        f.close()
 
 
 if __name__ == "__main__":

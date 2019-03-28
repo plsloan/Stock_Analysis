@@ -7,9 +7,9 @@ from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 from get_indicators import getEMA, getRSI
 
 def get_nasdaq_tickers():
-    return pandas.read_csv('Data/NASDAQ/NASDAQ.csv')['Symbol']
+    return pandas.read_csv('Data/NASDAQ/_NASDAQ.csv')['Symbol']
 def get_nyse_tickers():
-    return pandas.read_csv('Data/NYSE/NYSE.csv')['Symbol']
+    return pandas.read_csv('Data/NYSE/_NYSE.csv')['Symbol']
 def getSuggestedNYSE(start, end):
     symbols = pandas.read_csv('Data/NYSE.csv')['Symbol']
     current_index = 0
