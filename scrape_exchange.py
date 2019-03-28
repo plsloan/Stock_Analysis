@@ -46,6 +46,7 @@ def main():
 def scrape_historical_data(tickers, exchange):
     now = datetime.now()
     today = str(now.month) + '/' + str(now.day) + '/' + str(now.year)
+    failed_pull = []
     for ticker in tickers:
         url = 'http://quotes.wsj.com/' + ticker + '/historical-prices/download?MOD_VIEW=page&num_rows=6299.041666666667&range_days=6299.041666666667&startDate=01/01/2010&endDate=' + today
         content = get(url).text
@@ -53,9 +54,18 @@ def scrape_historical_data(tickers, exchange):
             path = 'Data/NASDAQ/'
         elif exchange[:2] == 'ny':
             path = 'Data/NYSE/'
-        f = open(path + ticker + '.csv','w')
-        f.write(content)
-        f.close()
-
+        try:
+            f = open(path + ticker + '.csv','w')
+            f.write(content)
+            f.close()
+        except:
+            failed_pull.append(ticker)
+    # write failed pulls
+    content = 'Symbol\n'
+    f = open(path + 'failed_pulls.csv','w')
+    for ticker in failed_pull:
+        content = content + ticker + '\n'
+    f.write(content)
+    f.close()
 if __name__ == "__main__":
     main()
