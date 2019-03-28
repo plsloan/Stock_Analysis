@@ -43,6 +43,7 @@ def main():
     else:
         print('Something was misspelled...')
 
+
 def scrape_historical_data(tickers, exchange):
     now = datetime.now()
     today = str(now.month) + '/' + str(now.day) + '/' + str(now.year)
@@ -67,5 +68,7 @@ def scrape_historical_data(tickers, exchange):
         content = content + ticker + '\n'
     f.write(content)
     f.close()
+
+
 if __name__ == "__main__":
     main()
