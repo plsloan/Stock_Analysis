@@ -3,7 +3,8 @@ Data/**
 dist/Data/**
 !Data/NASDAQ/_NASDAQ.csv
 !Data/NYSE/_NYSE.csv
-
+!dist/Data/NASDAQ/_NASDAQ.csv
+!dist/Data/NYSE/_NYSE.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
