@@ -49,7 +49,7 @@ def scrape_historical_data(tickers, exchange):
     today = str(now.month) + '/' + str(now.day) + '/' + str(now.year)
     failed_pull = []
     progress_bar = progress_bar_mine(len(tickers))
-    progress_bar.start()
+    progress_bar.start('Scraping')
     for i in range(len(tickers)):
         url = 'http://quotes.wsj.com/' + tickers[i] + '/historical-prices/download?MOD_VIEW=page&num_rows=6299.041666666667&range_days=6299.041666666667&startDate=01/01/2010&endDate=' + today
         content = get(url).text

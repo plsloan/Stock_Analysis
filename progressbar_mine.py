@@ -7,7 +7,9 @@ class progress_bar_mine:
     def __init__(self, max_val, widgets=[Bar(marker='=',left='[',right=']'), ' ', Percentage(), ' ', ETA(), ' ', FileTransferSpeed()]):
         self.widgets = widgets
         self.progress_bar = ProgressBar(widgets=widgets, maxval=max_val)
-    def start(self):
+    def start(self, label=None):
+        if label:
+            print('// ---------- ' + label + ' ---------- \\\\')
         self.progress_bar.start()
     def update(self, i):
         self.progress_bar.update(int(i))
