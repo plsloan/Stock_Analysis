@@ -1,13 +1,16 @@
 import pandas
 from os import listdir
-from os.path import isfile, join
 from requests import get
 from bs4 import BeautifulSoup
+from datetime import datetime
+from os.path import isfile, join
+
+column_name = datetime.now().strftime('%Y-%m-%d')
 
 def main():
     response = input('all? ')
     path = 'Data/MACD_Crossover/'
-    if (response == '' or response[0] != 'n'):
+    if (response == '' or response.lower()[0] != 'n'):
         for csv_file in [f for f in listdir(path) if isfile(join(path, f))]:
             filename = path + csv_file
             df = pandas.read_csv(filename)
@@ -18,7 +21,7 @@ def main():
                     updated_prices.append(float(get_ticker_price(ticker)))
                 except:
                     updated_prices.append(-1.0)
-            df['Updated_Price'] = updated_prices
+            df[column_name] = updated_prices
             gainers = get_gainers(df)
             print(gainers)
             print("Accuracy:", len(gainers)/len(df))
@@ -35,7 +38,7 @@ def main():
                 updated_prices.append(float(get_ticker_price(ticker)))
             except:
                 updated_prices.append(-1.0)
-        df['Updated_Price'] = updated_prices
+        df[column_name] = updated_prices
         gainers = get_gainers(df)
         print(gainers)
         print("Accuracy:", len(gainers)/len(df))
@@ -49,7 +52,8 @@ def get_ticker_price(ticker):
     return(divs[7].find('div').find('span').text)
 
 def get_gainers(df):
-    return df[df['Updated_Price'] > df['Close']]
+    column = df.keys()[-1]
+    return df[df[column] > df['Close']]
 
 if __name__ == "__main__":
     main()
