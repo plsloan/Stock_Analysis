@@ -9,7 +9,9 @@ column_name = datetime.now().strftime('%Y-%m-%d')
 
 def main():
     response = input('all? ')
-    path = 'Data/Watchlist/'
+    date = datetime.now().strftime('%Y-%m-%d')
+    path = 'Data/Watchlist/' + date + '/'
+
     if (response == '' or response.lower()[0] != 'n'):
         for csv_file in [f for f in listdir(path) if isfile(join(path, f))]:
             filename = path + csv_file
@@ -28,8 +30,9 @@ def main():
             df.to_csv(filename, index=False)
             print('\n\n')
     else:
-        filename = input("Enter date (YYYY-MM-DD): ")
-        filename = path + filename + '.csv'
+        input_date = input("Enter date (YYYY-MM-DD): ")
+        input_date = input_date + '/'
+        filename = path + input_date + filename + '.csv'
         df = pandas.read_csv(filename)
         tickers = df['Symbol']
         updated_prices = []
