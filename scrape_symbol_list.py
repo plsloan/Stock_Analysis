@@ -44,7 +44,6 @@ def scrape_symbol(ticker):
             content = content + ticker + '\n'
         f.write(content)
         f.close()
-
 def compile_file(tickers):
     date = datetime.now().strftime('%Y-%m-%d')
     data = []

@@ -40,8 +40,9 @@ def main():
                 updated_prices.append(-1.0)
         df[column_name] = updated_prices
         gainers = get_gainers(df)
+        print('Gainers')
         print(gainers)
-        print("Accuracy:", len(gainers)/len(df))
+        print("\n\nAccuracy:", len(gainers)/len(df), '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
         df.to_csv(filename, index=False)
         
 def get_ticker_price(ticker):
