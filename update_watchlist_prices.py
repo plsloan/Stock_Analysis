@@ -24,8 +24,9 @@ def main():
                     updated_prices.append(-1.0)
             df[column_name] = updated_prices
             gainers = get_gainers(df)
+            print('Gainers')
             print(gainers)
-            print("Accuracy:", len(gainers)/len(df))
+            print("\n\nAccuracy:", str(len(gainers)/len(df)*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
             df.to_csv(filename, index=False)
             print('\n\n')
     else:
@@ -43,7 +44,7 @@ def main():
         gainers = get_gainers(df)
         print('Gainers')
         print(gainers)
-        print("\n\nAccuracy:", len(gainers)/len(df), '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
+        print("\n\nAccuracy:", str(int(len(gainers)/len(df))*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
         df.to_csv(filename, index=False)
 
 if __name__ == "__main__":

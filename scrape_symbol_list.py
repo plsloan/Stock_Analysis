@@ -14,6 +14,7 @@ from update_crossover_prices import get_ticker_price
 def main():
     # get 
     tickers = input('Enter list of symbols (separated by space): ').split(' ')
+    tickers.sort()
     progress_bar = progress_bar_mine(len(tickers))
     progress_bar.start()
     for i in range(len(tickers)):
@@ -47,22 +48,15 @@ def scrape_symbol(ticker):
 def compile_file(tickers):
     date = datetime.now().strftime('%Y-%m-%d')
     data = []
-    updated_prices = []
     path = 'Data/Watchlist/Temp/'
     for csv_file in [f for f in listdir(path) if isfile(join(path, f))]:
         filename = path + csv_file
         data.append(pandas.read_csv(filename, delimiter=', ', engine='python'))
-    for ticker in tickers:
-        try:
-            updated_prices.append(float(get_ticker_price(ticker)))
-        except:
-            updated_prices.append(-1.0)
     shutil.rmtree(path, ignore_errors=True)
     df = pandas.DataFrame(columns=data[0].keys())
     for d in data:
         df = df.append(d.iloc[0])
     df['Symbol'] = tickers
-    # df[date] = updated_prices
     df.to_csv('Data/Watchlist/' + date + '.csv', index=False)
 
 if __name__ == '__main__':
