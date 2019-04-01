@@ -63,7 +63,7 @@ def compile_file(tickers):
     for d in data:
         df = df.append(d.iloc[0])
     df['Symbol'] = tickers
-    df[date] = updated_prices
+    # df[date] = updated_prices
     df.to_csv('Data/Watchlist/' + date + '.csv', index=False)
 
 if __name__ == '__main__':
