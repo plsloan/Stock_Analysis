@@ -6,7 +6,9 @@ from datetime import datetime
 from os.path import isfile, join
 from update_crossover_prices import get_gainers, get_ticker_price
 
-column_name = datetime.now().strftime('%Y-%m-%d')
+now = datetime.now()
+column_name = now.strftime('%Y-%m-%d')
+hour_minute = now.strftime('%H%M')
 
 def main():
     response = input('all? ')
@@ -24,11 +26,11 @@ def main():
                     updated_prices.append(-1.0)
             df[column_name] = updated_prices
             gainers = get_gainers(df)
-            print('Gainers')
+            print('\nGainers')
             print(gainers)
             print("\n\nAccuracy:", str(len(gainers)/len(df)*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
-            df.to_csv(filename, index=False)
-            print('\n\n')
+            df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
+            print('\n')
     else:
         filename = input("Enter date (YYYY-MM-DD): ")
         filename = path + filename + '.csv'
@@ -45,7 +47,7 @@ def main():
         print('Gainers')
         print(gainers)
         print("\n\nAccuracy:", str(int(len(gainers)/len(df))*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
-        df.to_csv(filename, index=False)
+        df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
 
 if __name__ == "__main__":
     main()
