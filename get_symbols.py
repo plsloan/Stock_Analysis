@@ -2,9 +2,12 @@ import pandas
 import webbrowser as browser
 import robin_stocks as robinhood
 from pandas_datareader import data as web
+from datetime import datetime
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 
 from get_indicators import getEMA, getRSI
+
+now = datetime.now().strftime('%Y-%m-%d')
 
 def get_nasdaq_tickers():
     return pandas.read_csv('Data/NASDAQ/_NASDAQ.csv')['Symbol']
@@ -139,3 +142,7 @@ def printRobinhoodSymbols():
     my_stocks = robinhood.build_holdings()
     for ticker in my_stocks.keys():
         print(ticker)
+def getWatchlistSymbols(date=now):
+    path = 'Data/Watchlist/'
+    filename = path + date + '.csv'
+    return pandas.read_csv(filename)['Symbol']
