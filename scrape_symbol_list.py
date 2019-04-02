@@ -1,5 +1,6 @@
 import pandas
 import shutil
+import warnings
 
 from datetime import datetime
 from requests import get 
@@ -10,6 +11,7 @@ from os import listdir
 from os.path import isfile, join
 
 from update_crossover_prices import get_ticker_price
+warnings.simplefilter("ignore")
 
 def main():
     # get 
@@ -46,7 +48,6 @@ def scrape_symbol(ticker):
         f.write(content)
         f.close()
 def compile_file(tickers):
-    date = datetime.now().strftime('%Y-%m-%d')
     data = []
     path = 'Data/Watchlist/Temp/'
     for csv_file in [f for f in listdir(path) if isfile(join(path, f))]:
@@ -54,9 +55,13 @@ def compile_file(tickers):
         data.append(pandas.read_csv(filename, delimiter=', ', engine='python'))
     shutil.rmtree(path, ignore_errors=True)
     df = pandas.DataFrame(columns=data[0].keys())
-    for d in data:
-        df = df.append(d.iloc[0])
+    for i in range(len(data)):
+        try:
+            df = df.append(data[i].iloc[0])
+        except:
+            del tickers[i]
     df['Symbol'] = tickers
+    date = datetime.strptime(df['Date'].iloc[0], '%m/%d/%y').strftime('%Y-%m-%d')
     df.to_csv('Data/Watchlist/' + date + '.csv', index=False)
 
 if __name__ == '__main__':
