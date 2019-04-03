@@ -23,10 +23,11 @@ def main():
                     updated_prices.append(-1.0)
             df[column_name] = updated_prices
             gainers = get_gainers(df)
+            print('\nGainers -', csv_file[:-4].replace('-', '/'))
             print(gainers)
-            print("Accuracy:", len(gainers)/len(df))
+            print("\n\nAccuracy:", str(len(gainers)/len(df)*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
             df.to_csv(filename, index=False)
-            print('\n\n')
+            print('\n')
     else:
         filename = input("Enter date (YYYY-MM-DD): ")
         filename = path + filename + '.csv'
@@ -40,10 +41,11 @@ def main():
                 updated_prices.append(-1.0)
         df[column_name] = updated_prices
         gainers = get_gainers(df)
-        print('Gainers')
+        print('\nGainers -', filename.split('/')[2][:-4].replace('-', '/'))
         print(gainers)
-        print("\n\nAccuracy:", len(gainers)/len(df), '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
+        print("\n\nAccuracy:", str(len(gainers)/len(df)*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
         df.to_csv(filename, index=False)
+        print('\n')
         
 def get_ticker_price(ticker):
     url = 'https://finance.yahoo.com/quote/' + ticker

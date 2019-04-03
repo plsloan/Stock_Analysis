@@ -26,9 +26,9 @@ def main():
                     updated_prices.append(-1.0)
             df[column_name] = updated_prices
             gainers = get_gainers(df)
-            print('\nGainers')
+            print('\nGainers -', csv_file[:-4].replace('-', '/'))
             print(gainers)
-            print("\n\nAccuracy:", str(len(gainers)/len(df)*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
+            print("\n\nAccuracy:", str(float(len(gainers)/len(df))*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
             df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
             print('\n')
     else:
@@ -44,9 +44,9 @@ def main():
                 updated_prices.append(-1.0)
         df[column_name] = updated_prices
         gainers = get_gainers(df)
-        print('Gainers')
+        print('\nGainers -', filename.split('/')[2][:-4].replace('-', '/'))
         print(gainers)
-        print("\n\nAccuracy:", str(int(len(gainers)/len(df))*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
+        print("\n\nAccuracy:", str(float(len(gainers)/len(df))*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
         df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
 
 if __name__ == "__main__":
