@@ -28,7 +28,7 @@ def main():
             gainers = get_gainers(df)
             print('\nGainers -', csv_file[:-4].replace('-', '/'))
             print(gainers)
-            print("\n\nAccuracy:", str(float(len(gainers)/len(df))*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
+            print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
             df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
             print('\n')
     else:
@@ -46,7 +46,7 @@ def main():
         gainers = get_gainers(df)
         print('\nGainers -', filename.split('/')[2][:-4].replace('-', '/'))
         print(gainers)
-        print("\n\nAccuracy:", str(float(len(gainers)/len(df))*100) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
+        print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
         df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
 
 if __name__ == "__main__":
