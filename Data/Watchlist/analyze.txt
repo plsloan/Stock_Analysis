@@ -1,0 +1,40 @@
+2019-04-01
+
+ * Gainers: 3
+ * Losers: 2
+ * Total Gain: $1.88
+ * Accuracy: 60.00%
+
+
+
+
+2019-04-02
+
+ * Gainers: 9
+ * Losers: 6
+ * Total Gain: $0.86
+ * Accuracy: 60.00%
+
+
+
+
+2019-04-03
+
+ * Gainers: 6
+ * Losers: 1
+ * Total Gain: $3.11
+ * Accuracy: 85.71%
+
+
+
+
+2019-04-04
+
+ * Gainers: 7
+ * Losers: 1
+ * Total Gain: $1.51
+ * Accuracy: 87.50%
+
+
+
+

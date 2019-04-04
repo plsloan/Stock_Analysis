@@ -3,8 +3,11 @@ Data/**
 dist/Data/**
 !Data/NASDAQ/_NASDAQ.csv
 !Data/NYSE/_NYSE.csv
+!Data/MACD_Crossover/analyze.txt
+!Data/Watchlist/analyze.txt
 !dist/Data/NASDAQ/_NASDAQ.csv
 !dist/Data/NYSE/_NYSE.csv
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
