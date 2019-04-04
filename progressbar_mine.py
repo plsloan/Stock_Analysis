@@ -4,8 +4,16 @@ class progress_bar_mine:
     widgets = [Bar(marker='=',left='[',right=']')]
     progress_bar = ProgressBar(widgets=widgets, maxval=100)
     
-    def __init__(self, max_val, widgets=[Bar(marker='=',left='[',right=']'), ' ', Percentage(), ' ', ETA(), ' ', FileTransferSpeed()]):
-        self.widgets = widgets
+    def __init__(self, max_val, widgets=[Bar(marker='=',left='[',right=']'), ' ', Percentage(), ' ', ETA(), ' ', FileTransferSpeed()], percentage=True, eta=True, transfer_speed=True):
+        if percentage:
+            self.widgets.append(' ')
+            self.widgets.append(Percentage())
+        if eta:
+            self.widgets.append(' ')
+            self.widgets.append(ETA())
+        if transfer_speed:
+            self.widgets.append(' ')
+            self.widgets.append(FileTransferSpeed())
         self.progress_bar = ProgressBar(widgets=widgets, maxval=max_val)
     def start(self, label=None):
         if label:
