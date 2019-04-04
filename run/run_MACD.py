@@ -1,8 +1,14 @@
-from os import system
+import sys
+sys.path.append('..')
+import scrape_MACD_crossover
+import analyze_MACD
+from os import chdir
 
 def main():
-    system('python ../scrape_MACD_crossover.py')
-    system('python ../analyze_MACD.py')
+    chdir('..')
+    scrape_MACD_crossover.main()
+    print()
+    analyze_MACD.main()
 
 if __name__ == '__main__':
     main()

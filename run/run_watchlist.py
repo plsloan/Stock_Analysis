@@ -1,8 +1,14 @@
-from os import system
+import sys
+sys.path.append('..')
+import scrape_symbol_list
+import analyze_watchlist
+from os import chdir
 
 def main():
-    system('python ../scrape_symbol_list.py')
-    system('python ../analyze_watchlist.py')
+    chdir('..')
+    scrape_symbol_list.main()
+    print()
+    analyze_watchlist.main()
 
 if __name__ == '__main__':
     main()
