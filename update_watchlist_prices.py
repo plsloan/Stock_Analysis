@@ -13,7 +13,7 @@ hour_minute = now.strftime('%H%M')
 def main():
     response = input('all? ')
     path = 'Data/Watchlist/'
-    if (response == '' or response.lower()[0] != 'n'):
+    if (response == '' or response.lower()[0] == 'y'):
         for csv_file in [f for f in listdir(path) if isfile(join(path, f))]:
             filename = path + csv_file
             df = pandas.read_csv(filename)
@@ -29,9 +29,10 @@ def main():
             print('\nGainers -', csv_file[:-4].replace('-', '/'))
             print(gainers)
             print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
+            df.to_csv(filename[:-4] + '.csv', index=False)
             df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
             print('\n')
-    else:
+    elif (response.lower()[0] == 'n'):
         filename = input("Enter date (YYYY-MM-DD): ")
         filename = path + filename + '.csv'
         df = pandas.read_csv(filename)
@@ -47,6 +48,7 @@ def main():
         print('\nGainers -', filename.split('/')[2][:-4].replace('-', '/'))
         print(gainers)
         print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
+        df.to_csv(filename[:-4] + '.csv', index=False)
         df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
 
 if __name__ == "__main__":
