@@ -10,3 +10,5 @@ pyinstaller -F scrape_symbol_list.py
 pyinstaller -F stock_bot.py
 pyinstaller -F update_crossover_prices.py
 pyinstaller -F update_watchlist_prices.py
+pyinstaller -F -w run/run_MACD.py
+pyinstaller -F -w run/run_watchlist.py
