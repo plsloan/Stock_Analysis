@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from os.path import isfile, join
 from progressbar_mine import progress_bar_mine
-from update_crossover_prices import get_gainers, get_ticker_price
+from update_crossover_prices import get_ticker_price
 
 now = datetime.now()
 column_name = now.strftime('%Y-%m-%d')
@@ -29,14 +29,23 @@ def main():
                 except:
                     updated_prices.append(-1.0)
             df[column_name] = updated_prices
-            gainers = get_gainers(df)
+            gain_values = df[column_name] - df['Close']
+            for i in range(len(gain_values)):
+                gain_values[i] = round(gain_values[i], 2)
+            df['Gain'] = gain_values
+            gainers = df[df['Gain'] > 0]
+            # keep Gain column last
+            if df.keys()[-1] != 'Gain':
+                cols = list(df.keys())
+                cols = cols[:-2] + [cols[-1]] + [cols[-2]]
+                df = df[cols]
             # print('\nGainers -', csv_file.split('\\')[1][:-4].replace('-', '/'))
             # print(gainers)
             # print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
             # print('\n')
             df.to_csv(csv_file[:-4] + '.csv', index=False)
             df.to_csv(csv_file[:-4] + '_' + hour_minute + '.csv', index=False)
-            progress_bar.update(csv_files.index(csv_file))
+            progress_bar.update(csv_files.index(csv_file) + 1)
         progress_bar.finish()
     elif (response.lower()[0] == 'n'):
         filename = input("Enter date (YYYY-MM-DD): ")
@@ -50,10 +59,20 @@ def main():
             except:
                 updated_prices.append(-1.0)
         df[column_name] = updated_prices
-        gainers = get_gainers(df)
+        gain_values = df[column_name] - df['Close']
+        for i in range(len(gain_values)):
+            gain_values[i] = round(gain_values[i], 2)
+        df['Gain'] = gain_values
+        gainers = df[df['Gain'] > 0]
+        # keep Gain column last
+        if df.keys()[-1] != 'Gain':
+            cols = list(df.keys())
+            cols = cols[:-2] + [cols[-1]] + [cols[-2]]
+            df = df[cols]
         print('\nGainers -', filename.split('/')[2][:-4].replace('-', '/'))
         print(gainers)
         print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
+        
         df.to_csv(filename[:-4] + '.csv', index=False)
         df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
 

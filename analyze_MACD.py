@@ -17,8 +17,8 @@ def main():
             df = pandas.read_csv(csv)
         under25 = df[df['Close'] <= 25]
         above25 = df[df['Close'] > 25]
-        gainers = df[df['Close'] < df[newest_column]]
-        losers = df[df['Close'] >= df[newest_column]]
+        gainers = df[df['Gain'] > 0]
+        losers = df[df['Gain'] <= 0]
         gainers_under25 = gainers[gainers['Close'] <= 25.0]
         gainers_above25 = gainers[gainers['Close'] > 25.0]
         losers_under25 = losers[losers['Close'] <= 25.0]
@@ -26,17 +26,17 @@ def main():
         content = content + csv.split('\\')[1][:-4] + '\n\n'
         content = addToContent(content, ' * Gainers: ', gainers)
         content = addToContent(content, ' * Losers: ', losers)
-        content = content + ' * Total Gain: ' + '$' + str("{0:.2f}".format((df[newest_column] - df['Close']).sum())) + '\n'
+        content = content + ' * Total Gain: ' + '$' + str("{0:.2f}".format(df['Gain'].sum())) + '\n'
         content = content + ' * Accuracy: ' + str("{0:.2f}".format(float(len(gainers)/len(df))*100)) + '%\n'
         content = content + '\n'
-        content = addToContent(content, ' * Gainers < 25: ', gainers_under25)
-        content = addToContent(content, ' * Losers < 25: ', losers_under25)
-        content = content + ' * Total Gain: ' + '$' + str("{0:.2f}".format((under25[newest_column] - under25['Close']).sum())) + '\n'
+        content = addToContent(content, ' * Gainers < $25: ', gainers_under25)
+        content = addToContent(content, ' * Losers < $25: ', losers_under25)
+        content = content + ' * Total Gain: ' + '$' + str("{0:.2f}".format(under25['Gain'].sum())) + '\n'
         content = content + ' * Accuracy: ' + str("{0:.2f}".format(float(len(gainers_under25)/len(under25))*100)) + '%\n'
         content = content + '\n'
-        content = addToContent(content, ' * Gainers > 25: ', gainers_above25)
-        content = addToContent(content, ' * Losers > 25: ', losers_above25)
-        content = content + ' * Total Gain: ' + '$' + str("{0:.2f}".format((above25[newest_column] - above25['Close']).sum())) + '\n'
+        content = addToContent(content, ' * Gainers > $25: ', gainers_above25)
+        content = addToContent(content, ' * Losers > $25: ', losers_above25)
+        content = content + ' * Total Gain: ' + '$' + str("{0:.2f}".format(above25['Gain'].sum())) + '\n'
         content = content + ' * Accuracy: ' + str("{0:.2f}".format(float(len(gainers_above25)/len(above25))*100)) + '%\n'
         content = content + '\n\n\n'
     f = open(path + 'analyze.txt', "w")
