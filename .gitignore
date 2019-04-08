@@ -1,6 +1,6 @@
 # my stuff
-Data/**
-dist/Data/**
+Data/*
+dist/Data/*
 !Data/NASDAQ/_NASDAQ.csv
 !Data/NYSE/_NYSE.csv
 !Data/MACD_Crossover/analyze.txt
