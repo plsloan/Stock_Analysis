@@ -4,8 +4,10 @@ from requests import get
 from bs4 import BeautifulSoup
 from datetime import datetime
 from progressbar_mine import progress_bar_mine
+from alpha_vantage.timeseries import TimeSeries
 
 column_name = datetime.now().strftime('%Y-%m-%d')
+time_series = TimeSeries(key='5TBOUP0SFMZDQSWR', output_format='pandas')
 
 def main():
     response = input('all? ')
@@ -69,13 +71,17 @@ def main():
         print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
         df.to_csv(filename, index=False)
         print('\n')
-        
+    
 def get_ticker_price(ticker):
-    url = 'https://finance.yahoo.com/quote/' + ticker
-    html = BeautifulSoup(get(url).content, features="lxml")
-    header = html.find('div', id="quote-header-info")
-    divs = header.find_all('div')
-    return(divs[7].find('div').find('span').text)
+    try: 
+        data, meta_data = time_series.get_intraday(symbol=ticker,interval='1min', outputsize='compact')
+        return data.iloc[-1][3]
+    except:
+        url = 'https://finance.yahoo.com/quote/' + ticker
+        html = BeautifulSoup(get(url).content, features="lxml")
+        header = html.find('div', id="quote-header-info")
+        divs = header.find_all('div')
+        return(divs[7].find('div').find('span').text)
 
 if __name__ == "__main__":
     main()
