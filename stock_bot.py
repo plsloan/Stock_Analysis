@@ -324,7 +324,7 @@ def outputAnalysis(data, ticker, days=0):
         rsi_support = 'normal'
 
     # Udacity indicators
-    if in_band == 'oversold' and macd_location == -1 and recent_crossover == 'no':
+    if udacity_support(in_band, macd_location, recent_crossover):
         print("Udacity: Check out this stock")
     else:
         print("Udacity: Nah fam")
@@ -349,6 +349,12 @@ def getScore(analysis):
     if analysis[5].lower() == 'oversold':                   score = score + 3
     elif analysis[5].lower() == 'normal':                   score = score + 2  
     return score    
+
+def udacity_support(in_band, macd_location, recent_crossover):
+    if in_band == 'oversold' and macd_location == -1 and recent_crossover == 'no':
+        return True
+    else:
+        return False
 
 
 # -------------- MAIN ------------- #
