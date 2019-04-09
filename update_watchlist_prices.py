@@ -7,6 +7,7 @@ from datetime import datetime
 from os.path import isfile, join
 from progressbar_mine import progress_bar_mine
 from update_crossover_prices import get_ticker_price
+import analyze_watchlist
 
 now = datetime.now()
 column_name = now.strftime('%Y-%m-%d')
@@ -72,9 +73,9 @@ def main():
         print('\nGainers -', filename.split('/')[2][:-4].replace('-', '/'))
         print(gainers)
         print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
-        
         df.to_csv(filename[:-4] + '.csv', index=False)
         df.to_csv(filename[:-4] + '_' + hour_minute + '.csv', index=False)
+    analyze_watchlist.main()
 
 if __name__ == "__main__":
     main()
