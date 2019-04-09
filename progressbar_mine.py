@@ -4,7 +4,7 @@ class progress_bar_mine:
     widgets = [Bar(marker='=',left='[',right=']')]
     progress_bar = ProgressBar(widgets=widgets, maxval=100)
     
-    def __init__(self, max_val, widgets=[Bar(marker='=',left='[',right=']'), ' ', Percentage(), ' ', ETA(), ' ', FileTransferSpeed()], percentage=True, eta=True, transfer_speed=True):
+    def __init__(self, max_val, widgets=widgets, percentage=True, eta=True, transfer_speed=True):
         if percentage:
             self.widgets.append(' ')
             self.widgets.append(Percentage())

@@ -77,7 +77,14 @@ def main():
 def get_ticker_price(ticker):
     try: 
         data, meta_data = time_series.get_intraday(symbol=ticker,interval='1min', outputsize='compact')
-        return data.iloc[-1][3]
+        if data.iloc[-1][3] != -1:
+            return data.iloc[-1][3]
+        else:
+            url = 'https://finance.yahoo.com/quote/' + ticker
+            html = BeautifulSoup(get(url).content, features="lxml")
+            header = html.find('div', id="quote-header-info")
+            divs = header.find_all('div')
+            return(divs[7].find('div').find('span').text)
     except:
         url = 'https://finance.yahoo.com/quote/' + ticker
         html = BeautifulSoup(get(url).content, features="lxml")
