@@ -16,17 +16,19 @@ from get_symbols import getRobinhoodSymbols, get_nasdaq_tickers, get_nyse_ticker
 import scrape_MACD_crossover, update_crossover_prices
 import open_MACD_charts
 import scrape_symbol_list, update_watchlist_prices
+import analyze_MACD, analyze_watchlist
 
 
 def main():
     scrape_MACD_crossover.main()
     update_crossover_prices.main()
+    analyze_MACD.main()
     
     # replace with percentage analysis
     open_MACD_charts.main()
     scrape_symbol_list.main()
     update_watchlist_prices.main()
-
+    analyze_watchlist.main()
 
 
     # # get data from stock exchanges
