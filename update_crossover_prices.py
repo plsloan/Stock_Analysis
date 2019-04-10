@@ -18,6 +18,7 @@ def main():
         progress_bar = progress_bar_mine(max_val=len(csv_files), transfer_speed=False)
         progress_bar.start()
         for csv_file in csv_files:
+            progress_bar.update(csv_files.index(csv_file))
             df = pandas.read_csv(csv_file)
             tickers = df['Symbol']
             updated_prices = []
@@ -25,11 +26,13 @@ def main():
                 try:
                     updated_prices.append(float(get_ticker_price(ticker)))
                 except:
-                    updated_prices.append(-1.0)
+                    updated_prices.append('NaN')
             df[column_name] = updated_prices
+            if len(df[df[column_name] == 'NaN']) > 0:
+                df.drop(df[df[column_name] == 'NaN'].index, inplace=True)
             gain_values = df[column_name] - df['Close']
             for i in range(len(gain_values)):
-                gain_values[i] = round(gain_values[i], 2)
+                gain_values.iloc[i] = round(gain_values.iloc[i], 2)
             df['Gain'] = gain_values
             gainers = df[df['Gain'] > 0]
             # keep Gain column last
@@ -42,7 +45,6 @@ def main():
             # print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
             # print('\n')
             df.to_csv(csv_file, index=False)
-            progress_bar.update(csv_files.index(csv_file))
         progress_bar.finish()
 
     elif response.lower()[0] == 'n':
@@ -55,11 +57,13 @@ def main():
             try:
                 updated_prices.append(float(get_ticker_price(ticker)))
             except:
-                updated_prices.append(-1.0)
+                updated_prices.append('NaN')
         df[column_name] = updated_prices
+        if len(df[df[column_name] == 'NaN']) > 0:
+            df.drop(df[df[column_name] == 'NaN'].index, inplace=True)
         gain_values = df[column_name] - df['Close']
         for i in range(len(gain_values)):
-            gain_values[i] = round(gain_values[i], 2)
+            gain_values.iloc[i] = round(gain_values.iloc[i], 2)
         df['Gain'] = gain_values
         gainers = df[df['Gain'] > 0]
         # keep Gain column last

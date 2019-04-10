@@ -40,6 +40,7 @@ def printSuggestedNYSE(start, end):
     print('\n--------------------------------- NYSE Symbols ---------------------------------')
     progress_bar.start()
     for ticker in symbols:
+        progress_bar.update(symbols.index(ticker))
         data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
         if getEMA(data, 50) > getEMA(data, 200) and getRSI(data) < 30:
             results.append({
@@ -47,9 +48,7 @@ def printSuggestedNYSE(start, end):
                 'EMA - 50' : getEMA(data, 50), 
                 'EMA - 200' : getEMA(data, 200), 
                 'RSI' : getRSI(data)})
-        current_index = current_index + 1
-        progress_bar.update(current_index)
-    progress_bar.finish()
+            progress_bar.finish()
     for stock in results:
         print(stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI'])
 def getSuggestedNASDAQ(start, end):
@@ -79,6 +78,7 @@ def printSuggestedNASDAQ(start, end):
     print('\n--------------------------------- NASDAQ Symbols --------------------------------')
     progress_bar.start()
     for ticker in symbols:
+        progress_bar.update(symbols.index(ticker))
         data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
         if getEMA(data, 50) > getEMA(data, 200) and getRSI(data) < 30:
             results.append({
@@ -86,8 +86,6 @@ def printSuggestedNASDAQ(start, end):
                 'EMA - 50' : getEMA(data, 50), 
                 'EMA - 200' : getEMA(data, 200), 
                 'RSI' : getRSI(data)})
-        current_index = current_index + 1
-        progress_bar.update(current_index)
     progress_bar.finish()
     for stock in results:
         print(stock['Ticker'], stock['EMA - 50'], stock['EMA - 200'], stock['RSI'])
@@ -118,6 +116,7 @@ def printSuggestedSymbols(start, end, symbols):
     print('\n----------------------------------- My Symbols ----------------------------------')
     progress_bar.start()
     for ticker in symbols:
+        progress_bar.update(symbols.index(ticker))
         data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
         if getEMA(data, 50) > getEMA(data, 200): # and getRSI(data) < 30:
             results.append({
@@ -125,8 +124,6 @@ def printSuggestedSymbols(start, end, symbols):
                 'EMA - 50' : getEMA(data, 50), 
                 'EMA - 200' : getEMA(data, 200)})#, 
                 #'RSI' : getRSI(data)})
-        current_index = current_index + 1
-        progress_bar.update(current_index)
     progress_bar.finish()
     print()
     for stock in results:

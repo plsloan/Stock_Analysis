@@ -21,6 +21,7 @@ def main():
         progress_bar = progress_bar_mine(max_val=len(csv_files), transfer_speed=False)
         progress_bar.start()
         for csv_file in csv_files:
+            progress_bar.update(csv_files.index(csv_file) + 1)
             df = pandas.read_csv(csv_file)
             tickers = df['Symbol']
             updated_prices = []
@@ -46,7 +47,6 @@ def main():
             # print('\n')
             df.to_csv(csv_file[:-4] + '.csv', index=False)
             df.to_csv(csv_file[:-4] + '_' + hour_minute + '.csv', index=False)
-            progress_bar.update(csv_files.index(csv_file) + 1)
         progress_bar.finish()
     elif (response.lower()[0] == 'n'):
         filename = input("Enter date (YYYY-MM-DD): ")

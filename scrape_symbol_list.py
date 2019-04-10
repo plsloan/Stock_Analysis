@@ -20,8 +20,8 @@ def main():
     progress_bar = progress_bar_mine(len(tickers))
     progress_bar.start()
     for i in range(len(tickers)):
-        scrape_symbol(tickers[i])
         progress_bar.update(i)
+        scrape_symbol(tickers[i])
     progress_bar.finish()
     compile_file(tickers)
 
