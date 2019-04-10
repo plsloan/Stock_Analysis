@@ -29,6 +29,10 @@ def main():
     update_watchlist_prices.main()
 
 
+    # if MACD_crossover(data) and bollinger_crossdown(data) and has_momentum(data):
+    #   suggest stock
+
+
     # # get data from stock exchanges
     # nasdaq_symbols = get_nasdaq_tickers()
     # nyse_symbols = get_nyse_tickers()
@@ -350,6 +354,16 @@ def getScore(analysis):
     elif analysis[5].lower() == 'normal':                   score = score + 2  
     return score    
 
+def MACD_crossover(data):
+    for i in range(5, 1, -1):
+        if data['MACD'][-1*i] <= data['Signal'][-1*i] and data['MACD'][-1*i+1] > data['Signal'][-1*i+1]:
+            return True
+    return False
+def bollinger_crossdown(data):
+    for i in range(5, 0, -1):
+        if data['Boll. Lower'][-1*i] > data['Close'][-1*i]:
+            return True
+    return False
 def udacity_support(in_band, macd_location, recent_crossover):
     if in_band == 'oversold' and macd_location == -1 and recent_crossover == 'no':
         return True
