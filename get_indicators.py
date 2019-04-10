@@ -28,9 +28,9 @@ def getRSI(data):
     else: 
         return 100
 def getBollingerBand(data):
-    s = 20  # span
+    w = 20  # span
     x = 2   # standard deviation periods
-    data_bollinger = data['Close'].ewm(span=s, min_periods=0, adjust=False, ignore_na=True)
+    data_bollinger = data['Close'].rolling(window=w)
     center = data_bollinger.mean()
     upper = data_bollinger.mean() + data_bollinger.std() * x
     lower = data_bollinger.mean() - data_bollinger.std() * x
