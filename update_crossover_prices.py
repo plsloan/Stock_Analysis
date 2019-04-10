@@ -1,18 +1,20 @@
 import glob
 import pandas
+import warnings
 from requests import get
-from bs4 import BeautifulSoup
 from datetime import datetime
+from bs4 import BeautifulSoup
 from progressbar_mine import progress_bar_mine
 from alpha_vantage.timeseries import TimeSeries
 import analyze_MACD
 
+path = 'Data/MACD_Crossover/'
 column_name = datetime.now().strftime('%Y-%m-%d')
+warnings.simplefilter(action='ignore', category=FutureWarning)
 time_series = TimeSeries(key='5TBOUP0SFMZDQSWR', output_format='pandas')
 
 def main():
     response = input('all? ')
-    path = 'Data/MACD_Crossover/'
     if (response == '' or response.lower()[0] == 'y'):
         csv_files = glob.glob(path + '*.csv')
         progress_bar = progress_bar_mine(max_val=len(csv_files), transfer_speed=False)
@@ -95,6 +97,7 @@ def get_ticker_price(ticker):
         header = html.find('div', id="quote-header-info")
         divs = header.find_all('div')
         return(divs[7].find('div').find('span').text)
+
 
 if __name__ == "__main__":
     main()
