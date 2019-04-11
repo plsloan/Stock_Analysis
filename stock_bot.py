@@ -20,11 +20,13 @@ import analyze_MACD, analyze_watchlist
 
 
 def main():
+    today = datetime.datetime.now().strftime('%Y-%m-%d')
     scrape_MACD_crossover.main()
     update_crossover_prices.main()
     
     # replace with percentage analysis
-    open_MACD_charts.main()
+    if not os.path.exists('Data/MACD_Crossover/' + today + '.csv' ):
+        open_MACD_charts.main()
     scrape_symbol_list.main()
     update_watchlist_prices.main()
 
