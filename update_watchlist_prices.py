@@ -110,7 +110,7 @@ def organize_data(data, filename):
             should_organize = True
     elif increment_count > 7:
         delta = now - then
-        if delta.days % 7 == 0 and delta/7 <= 4:
+        if delta.days % 7 == 0 and delta.days/7 <= 4:
             path = path + 'Week' + str(int(delta/7)) + '/'
             should_organize = True
         elif then.month - now.month == 1 and then.day - now.day == 0:
