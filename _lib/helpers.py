@@ -10,7 +10,6 @@ def find_file(starting_path, filename):
         if filename in files:
             file_list.append(os.path.join(root, filename))
     return file_list
-
 def get_directories(path):
     list_dir = os.listdir(path)
     temp_dir = []
@@ -20,6 +19,3 @@ def get_directories(path):
     for directory in temp_dir:
         list_dir.remove(directory)
     return list_dir
-
-
-print(find_file('../Data/Watchlist/', 'analyze.txt'))
