@@ -13,11 +13,12 @@ from os.path import isfile, join
 from update_crossover_prices import get_ticker_price
 warnings.simplefilter("ignore")
 
-def main():
+def main(tickers=None):
     today = datetime.now().strftime('%Y-%m-%d')
     if not os.path.exists('Data/Watchlist/' + today + '.csv' ):
         # get 
-        tickers = input('Enter list of symbols (separated by space): ').split(' ')
+        if tickers == None:
+            tickers = input('Enter list of symbols (separated by space): ').split(' ')
         tickers.sort()
         progress_bar = progress_bar_mine(len(tickers))
         progress_bar.start()
