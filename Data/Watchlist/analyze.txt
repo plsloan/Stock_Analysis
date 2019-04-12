@@ -2,7 +2,7 @@
 
  * Gainers: 4
  * Losers: 1
- * Total Gain: $1.00
+ * Total Gain: $1.33
  * Accuracy: 80.00%
 
 
@@ -12,7 +12,7 @@
 
  * Gainers: 9
  * Losers: 6
- * Total Gain: $3.83
+ * Total Gain: $5.01
  * Accuracy: 60.00%
 
 
@@ -22,7 +22,7 @@
 
  * Gainers: 5
  * Losers: 1
- * Total Gain: $1.46
+ * Total Gain: $3.06
  * Accuracy: 83.33%
 
 
@@ -30,20 +30,19 @@
 
 2019-04-04
 
- * Gainers: 7
- * Losers: 1
- * Total Gain: $4.31
- * Accuracy: 87.50%
+ * Gainers: 8
+ * Total Gain: $6.97
+ * Accuracy: 100.00%
 
 
 
 
 2019-04-05
 
- * Gainers: 5
- * Losers: 2
- * Total Gain: $1.47
- * Accuracy: 71.43%
+ * Gainers: 4
+ * Losers: 3
+ * Total Gain: $2.33
+ * Accuracy: 57.14%
 
 
 
@@ -52,7 +51,7 @@
 
  * Gainers: 2
  * Losers: 5
- * Total Gain: $-17.10
+ * Total Gain: $-0.92
  * Accuracy: 28.57%
 
 
@@ -61,7 +60,7 @@
 2019-04-09
 
  * Losers: 2
- * Total Gain: $-0.19
+ * Total Gain: $-0.11
  * Accuracy: 0.00%
 
 
@@ -71,7 +70,7 @@
 
  * Gainers: 2
  * Losers: 2
- * Total Gain: $-0.98
+ * Total Gain: $-1.09
  * Accuracy: 50.00%
 
 
@@ -79,10 +78,18 @@
 
 2019-04-11
 
- * Gainers: 1
- * Losers: 6
- * Total Gain: $-0.18
- * Accuracy: 14.29%
+ * Losers: 7
+ * Total Gain: $-0.93
+ * Accuracy: 0.00%
+
+
+
+
+2019-04-12
+
+ * Gainers: 2
+ * Total Gain: $0.29
+ * Accuracy: 100.00%
 
 
 
