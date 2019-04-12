@@ -21,15 +21,11 @@ def addToContent(content, label, df):
     return content
 def analyze(path, glob, main_folder=False):
     content = ''
+    total_gain = 0
     if main_folder:
         for csv in glob:
             if '_' not in csv:
                 df = pandas.read_csv(csv)
-                # update_input = input('Update first? ')
-                # if newest_column not in df.keys():
-                #     if update_input.lower()[0] == 'y':
-                #         update_watchlist_prices.main()
-                #         df = pandas.read_csv(csv)
                 under25 = df[df['Close'] <= 25]
                 above25 = df[df['Close'] > 25]
                 gainers = df[df['Close'] < df[newest_column]]
@@ -44,6 +40,7 @@ def analyze(path, glob, main_folder=False):
                 if len(losers) > 0:
                     content = addToContent(content, ' * Losers: ', losers)
                 if len(df) > 0:
+                    total_gain = total_gain + (df[newest_column] - df['Close']).sum()
                     content = content + ' * Total Gain: $' + str("{0:.2f}".format((df[newest_column] - df['Close']).sum())) + '\n'
                     content = content + ' * Accuracy: ' + str("{0:.2f}".format(float(len(gainers)/len(df))*100)) + '%\n'
                     content = content + '\n'
@@ -59,17 +56,13 @@ def analyze(path, glob, main_folder=False):
                         content = content + ' * Total Gain: $' + str("{0:.2f}".format((above25[newest_column] - above25['Close']).sum())) + '\n'
                         content = content + ' * Accuracy: ' + str("{0:.2f}".format(float(len(gainers_above25)/len(above25))*100)) + '%\n'
                 content = content + '\n\n\n'
-            f = open(path + 'analyze.txt', "w")
-            f.write(content)
-            f.close()
+        content = content + 'Total Gain for ' + path + ': $' + str("{0:.2f}".format(total_gain)) + '\n\n'
+        f = open(path + 'analyze.txt', "w")
+        f.write(content)
+        f.close()
     else:
         for csv in glob:
             df = pandas.read_csv(csv)
-            # update_input = input('Update first? ')
-            # if newest_column not in df.keys():
-            #     if update_input.lower()[0] == 'y':
-            #         update_watchlist_prices.main()
-            #         df = pandas.read_csv(csv)
             under25 = df[df['Close'] <= 25]
             above25 = df[df['Close'] > 25]
             gainers = df[df['Gain'] > 0]
@@ -84,13 +77,14 @@ def analyze(path, glob, main_folder=False):
             if len(losers) > 0:
                 content = addToContent(content, ' * Losers: ', losers)
             if len(df) > 0:
+                total_gain = total_gain + df['Gain'].sum()
                 content = content + ' * Total Gain: $' + str("{0:.2f}".format(df['Gain'].sum())) + '\n'
                 content = content + ' * Accuracy: ' + str("{0:.2f}".format(float(len(gainers)/len(df))*100)) + '%\n'
                 content = content + '\n'
                 if len(under25) > 0 and len(df) != len(under25):
                     content = addToContent(content, ' * Gainers < 25: ', gainers_under25)
                     content = addToContent(content, ' * Losers < 25: ', losers_under25)
-                    content = content + ' * Total Gain: $' + str("{0:.2f}".format((under25['Gain'].sum()))) + '\n'
+                    content = content + ' * Total Gain: $' + str("{0:.2f}".format(under25['Gain'].sum())) + '\n'
                     content = content + ' * Accuracy: ' + str("{0:.2f}".format(float(len(gainers_under25)/len(under25))*100)) + '%\n'
                     content = content + '\n'
                 if len(above25) > 0 and len(df) != len(above25):
@@ -99,6 +93,7 @@ def analyze(path, glob, main_folder=False):
                     content = content + ' * Total Gain: $' + str("{0:.2f}".format(above25['Gain'].sum())) + '\n'
                     content = content + ' * Accuracy: ' + str("{0:.2f}".format(float(len(gainers_above25)/len(above25))*100)) + '%\n'
             content = content + '\n\n\n'
+        content = content + 'Total Gain for ' + path + ': $' + str("{0:.2f}".format(total_gain)) + '\n\n'
         f = open(path + 'analyze.txt', "w")
         f.write(content)
         f.close()
