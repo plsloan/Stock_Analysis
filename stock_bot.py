@@ -30,8 +30,8 @@ def main():
         tickers_MACD = pandas.read_csv(crossover_csv)['Symbol']
     
     # replace with percentage analysis
-    if not os.path.exists('Data/MACD_Crossover/' + today + '.csv' ):
-        open_MACD_charts.main()
+    if not os.path.exists('Data/Watchlist/' + today + '.csv'):
+        open_MACD_charts.main(already_scraped=True)
     scrape_symbol_list.main()#tickers=tickers)
     update_watchlist_prices.main()
 

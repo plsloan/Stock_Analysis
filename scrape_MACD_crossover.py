@@ -6,9 +6,9 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from update_watchlist_prices import get_trading_dates
 
-def main():
+def main(outside_use=False):
     today = datetime.now().strftime('%Y-%m-%d')
-    if not os.path.exists('Data/MACD_Crossover/' + today + '.csv' ) and today in get_trading_dates():
+    if not (os.path.exists('Data/MACD_Crossover/' + today + '.csv' ) and today in get_trading_dates()) or outside_use:
         url = 'https://stock-screener.org/macd-crossover.aspx'
         MACD_data = get_MACD_data(url)
 
