@@ -19,8 +19,11 @@ path = 'Data/Watchlist/'
 column_name = now.strftime('%Y-%m-%d')
 hour_minute = now.strftime('%H%M')
 
-def main():
-    response = input('all? ')
+def main(continuous=False):
+    if not continuous:
+        response = input('all? ')
+    else: 
+        response = 'y'
     path = 'Data/Watchlist/'
     if response == '' or response.lower()[0] == 'y':
         csv_files = glob.glob(path + '*.csv')

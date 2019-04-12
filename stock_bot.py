@@ -33,7 +33,9 @@ def main():
     if not os.path.exists('Data/Watchlist/' + today + '.csv'):
         open_MACD_charts.main(already_scraped=True)
     scrape_symbol_list.main()#tickers=tickers)
-    update_watchlist_prices.main()
+    while datetime.datetime.now().hour < 16:
+        if datetime.datetime.now().minute in [0, 30]:
+            update_watchlist_prices.main(continuous=True)
 
 
     # if MACD_crossover(data) and bollinger_crossdown(data) and has_momentum(data):
