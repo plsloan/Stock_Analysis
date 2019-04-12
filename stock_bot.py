@@ -23,150 +23,153 @@ def main():
     today = datetime.datetime.now().strftime('%Y-%m-%d')
     scrape_MACD_crossover.main()
     update_crossover_prices.main()
+
+    crossover_csv = 'Data/MACD_Crossover/' + today + '.csv'
+    tickers_MACD = pandas.read_csv(crossover_csv)['Symbol']
     
     # replace with percentage analysis
     if not os.path.exists('Data/MACD_Crossover/' + today + '.csv' ):
         open_MACD_charts.main()
-    scrape_symbol_list.main()
+    scrape_symbol_list.main()#tickers=tickers)
     update_watchlist_prices.main()
 
 
     # if MACD_crossover(data) and bollinger_crossdown(data) and has_momentum(data):
     #   suggest stock
 
-
-    # # get data from stock exchanges
-    # nasdaq_symbols = get_nasdaq_tickers()
-    # nyse_symbols = get_nyse_tickers()
-    # my_symbols = getRobinhoodSymbols()
-    # macd_df = scrape_MACD_crossover.main()
-    # macd_under25 = macd_df[macd_df['Close'] < 25]
-
-    # decision = input('Fresh scrape? ')
-    # if decision.lower()[0] == 'y':
-    #     decision = input('Nasdaq, NYSE, or both? ')
-    #     if decision.lower()[:2] == 'na':
-    #         scrape_historical_data(nasdaq_symbols, 'nasdaq')
-    #     elif decision.lower()[:2] == 'ny':
-    #         scrape_historical_data(nyse_symbols, 'nyse')
-    #     elif decision.lower()[0] == 'b':
-    #         scrape_historical_data(nasdaq_symbols, 'nasdaq')
-    #         scrape_historical_data(nyse_symbols, 'nyse')
-    #     else: 
-    #         exit("\nInvalid input...")
-    # elif decision.lower()[0] == 'n':
-    #     pass
-    # else:
-    #     exit("\nInvalid input...")
-
-    # decision = input('Would you like to examine one stock or all available stocks? ')
-    # if decision.lower()[0] == 'o':
-    #     decision = 'y'
-    #     while decision.lower()[0] == 'y':
-    #         # get ticker
-    #         ticker = input('\nEnter ticker: ')
-    #         # get/convert days
-    #         days = input('Over how many days: ')
-    #         if days == '':
-    #             days = 365
-    #         else:
-    #             days = int(days)
-    #         # dates
-    #         today = datetime.datetime.now()
-    #         start = today - datetime.timedelta(days=days)
-    #         end = today
-    #         # get what to show
-    #         show_data = input('Show data? (y/n) ').lower()
-    #         show_analysis = input('Show analysis? (y/n) ').lower()
-    #         show_plot = input('Show graph? (y/n) ').lower()
-    #         # check path for file and import
-    #         if os.path.exists('Data/NASDAQ/' + ticker.upper() + '.csv'):
-    #             data = pandas.read_csv('Data/NASDAQ/' + ticker.upper() + '.csv', delimiter=', ', engine='python')
-    #         elif os.path.exists('Data/NYSE/' + ticker.upper() + '.csv'):
-    #             data = pandas.read_csv('Data/NYSE/' + ticker.upper() + '.csv', delimiter=', ', engine='python')
-    #         else:
-    #             data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
-    #         # indicator calculations
-    #         data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
-    #         data['MACD'], data['Signal'] = getMACD(data)
-    #         data['RSI'] = getRSI(data)
-    #         data['EMA 50'] = getEMA(data, 50)
-    #         data['EMA 200'] = getEMA(data, 200)                                                         # a little off
-    #         # show stuff
-    #         data_bool = False
-    #         plot_bool = False
-    #         analysis_bool = False
-    #         if show_data == 'y':        data_bool = True
-    #         if show_analysis == 'y':    analysis_bool = True
-    #         if show_plot == 'y':        plot_bool = True
-    #         if data_bool:       outputData(data, days=days)
-    #         if analysis_bool:   outputAnalysis(data, ticker, days=days)
-    #         if plot_bool:       browser.open('https://finance.yahoo.com/chart/' + ticker)
-    #         # another?
-    #         decision = input('\nAnalyze another stock (y/n)? ')
-    # elif decision.lower()[0] == 'a':
-    #     # get/convert days
-    #     days = input('Over how many days: ')
-    #     if days == '':
-    #         days = 365
-    #     else:
-    #         days = int(days)
-    #     # dates
-    #     today = datetime.datetime.now()
-    #     start = today - datetime.timedelta(days=days)
-    #     end = today
-    #     # get what to show
-    #     show_data = input('Show data? (y/n) ').lower()
-    #     show_analysis = input('Show analysis? (y/n) ').lower()
-    #     # get Nasdaq
-    #     progress_bar = progress_bar_mine(len(nasdaq_symbols) + len(nyse_symbols))
-    #     progress_bar.start(label="Nasdaq Symbols")
-    #     for i in range(len(nasdaq_symbols)):
-    #         if os.path.exists('Data/NASDAQ/' + nasdaq_symbols[i].upper() + '.csv'):
-    #             data = pandas.read_csv('Data/NASDAQ/' + nasdaq_symbols[i].upper() + '.csv', delimiter=', ', engine='python')
-    #         elif os.path.exists('Data/NYSE/' + nasdaq_symbols[i].upper() + '.csv'):
-    #             data = pandas.read_csv('Data/NYSE/' + nasdaq_symbols[i].upper() + '.csv', delimiter=', ', engine='python')
-    #         else:
-    #             data = web.DataReader(nasdaq_symbols[i], data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
-    #         if len(data['Close']) > 200:
-    #             # indicator calculations
-    #             data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
-    #             data['MACD'], data['Signal'] = getMACD(data)
-    #             data['RSI'] = getRSI(data)
-    #             data['EMA 50'] = getEMA(data, 50)
-    #             data['EMA 200'] = getEMA(data, 200)                                                         # a little off
-    #             # show stuff
-    #             data_bool = False
-    #             analysis_bool = False
-    #             if show_data == 'y':        data_bool = True
-    #             if show_analysis == 'y':    analysis_bool = True
-    #             if data_bool:       outputData(data, days=days)
-    #             if analysis_bool:   outputAnalysis(data, nasdaq_symbols[i], days=days)
-    #         progress_bar.update(i)
-    #     # get NYSE
-    #     for i in range(len(nyse_symbols)):
-    #         if os.path.exists('Data/NASDAQ/' + nyse_symbols[i].upper() + '.csv'):
-    #             data = pandas.read_csv('Data/NASDAQ/' + nyse_symbols[i].upper() + '.csv', delimiter=', ', engine='python')
-    #         elif os.path.exists('Data/NYSE/' + nyse_symbols[i].upper() + '.csv'):
-    #             data = pandas.read_csv('Data/NYSE/' + nyse_symbols[i].upper() + '.csv', delimiter=', ', engine='python')
-    #         else:
-    #             data = web.DataReader(nyse_symbols[i], data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
-    #         if len(data['Close']) > 200:
-    #             # indicator calculations
-    #             data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
-    #             data['MACD'], data['Signal'] = getMACD(data)
-    #             data['RSI'] = getRSI(data)
-    #             data['EMA 50'] = getEMA(data, 50)
-    #             data['EMA 200'] = getEMA(data, 200)                                                         # a little off
-    #             # show stuff
-    #             data_bool = False
-    #             analysis_bool = False
-    #             if show_data == 'y':        data_bool = True
-    #             if show_analysis == 'y':    analysis_bool = True
-    #             if data_bool:       outputData(data, days=days)
-    #             if analysis_bool:   outputAnalysis(data, nyse_symbols[i], days=days)
-    #         progress_bar.update(i + len(nasdaq_symbols))
-    #     progress_bar.finish()
+    # past version
+        # # get data from stock exchanges
+        # nasdaq_symbols = get_nasdaq_tickers()
+        # nyse_symbols = get_nyse_tickers()
+        # my_symbols = getRobinhoodSymbols()
+        # macd_df = scrape_MACD_crossover.main()
+        # macd_under25 = macd_df[macd_df['Close'] < 25]
+        #
+        # decision = input('Fresh scrape? ')
+        # if decision.lower()[0] == 'y':
+        #     decision = input('Nasdaq, NYSE, or both? ')
+        #     if decision.lower()[:2] == 'na':
+        #         scrape_historical_data(nasdaq_symbols, 'nasdaq')
+        #     elif decision.lower()[:2] == 'ny':
+        #         scrape_historical_data(nyse_symbols, 'nyse')
+        #     elif decision.lower()[0] == 'b':
+        #         scrape_historical_data(nasdaq_symbols, 'nasdaq')
+        #         scrape_historical_data(nyse_symbols, 'nyse')
+        #     else: 
+        #         exit("\nInvalid input...")
+        # elif decision.lower()[0] == 'n':
+        #     pass
+        # else:
+        #     exit("\nInvalid input...")
+        #
+        # decision = input('Would you like to examine one stock or all available stocks? ')
+        # if decision.lower()[0] == 'o':
+        #     decision = 'y'
+        #     while decision.lower()[0] == 'y':
+        #         # get ticker
+        #         ticker = input('\nEnter ticker: ')
+        #         # get/convert days
+        #         days = input('Over how many days: ')
+        #         if days == '':
+        #             days = 365
+        #         else:
+        #             days = int(days)
+        #         # dates
+        #         today = datetime.datetime.now()
+        #         start = today - datetime.timedelta(days=days)
+        #         end = today
+        #         # get what to show
+        #         show_data = input('Show data? (y/n) ').lower()
+        #         show_analysis = input('Show analysis? (y/n) ').lower()
+        #         show_plot = input('Show graph? (y/n) ').lower()
+        #         # check path for file and import
+        #         if os.path.exists('Data/NASDAQ/' + ticker.upper() + '.csv'):
+        #             data = pandas.read_csv('Data/NASDAQ/' + ticker.upper() + '.csv', delimiter=', ', engine='python')
+        #         elif os.path.exists('Data/NYSE/' + ticker.upper() + '.csv'):
+        #             data = pandas.read_csv('Data/NYSE/' + ticker.upper() + '.csv', delimiter=', ', engine='python')
+        #         else:
+        #             data = web.DataReader(ticker, data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
+        #         # indicator calculations
+        #         data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
+        #         data['MACD'], data['Signal'] = getMACD(data)
+        #         data['RSI'] = getRSI(data)
+        #         data['EMA 50'] = getEMA(data, 50)
+        #         data['EMA 200'] = getEMA(data, 200)                                                         # a little off
+        #         # show stuff
+        #         data_bool = False
+        #         plot_bool = False
+        #         analysis_bool = False
+        #         if show_data == 'y':        data_bool = True
+        #         if show_analysis == 'y':    analysis_bool = True
+        #         if show_plot == 'y':        plot_bool = True
+        #         if data_bool:       outputData(data, days=days)
+        #         if analysis_bool:   outputAnalysis(data, ticker, days=days)
+        #         if plot_bool:       browser.open('https://finance.yahoo.com/chart/' + ticker)
+        #         # another?
+        #         decision = input('\nAnalyze another stock (y/n)? ')
+        # elif decision.lower()[0] == 'a':
+        #     # get/convert days
+        #     days = input('Over how many days: ')
+        #     if days == '':
+        #         days = 365
+        #     else:
+        #         days = int(days)
+        #     # dates
+        #     today = datetime.datetime.now()
+        #     start = today - datetime.timedelta(days=days)
+        #     end = today
+        #     # get what to show
+        #     show_data = input('Show data? (y/n) ').lower()
+        #     show_analysis = input('Show analysis? (y/n) ').lower()
+        #     # get Nasdaq
+        #     progress_bar = progress_bar_mine(len(nasdaq_symbols) + len(nyse_symbols))
+        #     progress_bar.start(label="Nasdaq Symbols")
+        #     for i in range(len(nasdaq_symbols)):
+        #         if os.path.exists('Data/NASDAQ/' + nasdaq_symbols[i].upper() + '.csv'):
+        #             data = pandas.read_csv('Data/NASDAQ/' + nasdaq_symbols[i].upper() + '.csv', delimiter=', ', engine='python')
+        #         elif os.path.exists('Data/NYSE/' + nasdaq_symbols[i].upper() + '.csv'):
+        #             data = pandas.read_csv('Data/NYSE/' + nasdaq_symbols[i].upper() + '.csv', delimiter=', ', engine='python')
+        #         else:
+        #             data = web.DataReader(nasdaq_symbols[i], data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
+        #         if len(data['Close']) > 200:
+        #             # indicator calculations
+        #             data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
+        #             data['MACD'], data['Signal'] = getMACD(data)
+        #             data['RSI'] = getRSI(data)
+        #             data['EMA 50'] = getEMA(data, 50)
+        #             data['EMA 200'] = getEMA(data, 200)                                                         # a little off
+        #             # show stuff
+        #             data_bool = False
+        #             analysis_bool = False
+        #             if show_data == 'y':        data_bool = True
+        #             if show_analysis == 'y':    analysis_bool = True
+        #             if data_bool:       outputData(data, days=days)
+        #             if analysis_bool:   outputAnalysis(data, nasdaq_symbols[i], days=days)
+        #         progress_bar.update(i)
+        #     # get NYSE
+        #     for i in range(len(nyse_symbols)):
+        #         if os.path.exists('Data/NASDAQ/' + nyse_symbols[i].upper() + '.csv'):
+        #             data = pandas.read_csv('Data/NASDAQ/' + nyse_symbols[i].upper() + '.csv', delimiter=', ', engine='python')
+        #         elif os.path.exists('Data/NYSE/' + nyse_symbols[i].upper() + '.csv'):
+        #             data = pandas.read_csv('Data/NYSE/' + nyse_symbols[i].upper() + '.csv', delimiter=', ', engine='python')
+        #         else:
+        #             data = web.DataReader(nyse_symbols[i], data_source='yahoo', start=start.strftime('%m/%d/%Y'), end=end.strftime('%m/%d/%Y'))
+        #         if len(data['Close']) > 200:
+        #             # indicator calculations
+        #             data['Boll. Upper'], data['Boll. Center'], data['Boll. Lower'] = getBollingerBand(data)     # upper & lower are a little off
+        #             data['MACD'], data['Signal'] = getMACD(data)
+        #             data['RSI'] = getRSI(data)
+        #             data['EMA 50'] = getEMA(data, 50)
+        #             data['EMA 200'] = getEMA(data, 200)                                                         # a little off
+        #             # show stuff
+        #             data_bool = False
+        #             analysis_bool = False
+        #             if show_data == 'y':        data_bool = True
+        #             if show_analysis == 'y':    analysis_bool = True
+        #             if data_bool:       outputData(data, days=days)
+        #             if analysis_bool:   outputAnalysis(data, nyse_symbols[i], days=days)
+        #         progress_bar.update(i + len(nasdaq_symbols))
+        #     progress_bar.finish()
 
 # shows plot for price info, MACD, and RSI
 def showPlot(data, days=0):
