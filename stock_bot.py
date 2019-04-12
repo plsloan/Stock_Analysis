@@ -1,4 +1,5 @@
 import os
+import glob
 import pandas
 import datetime
 import warnings
@@ -24,8 +25,9 @@ def main():
     scrape_MACD_crossover.main()
     update_crossover_prices.main()
 
-    crossover_csv = 'Data/MACD_Crossover/' + today + '.csv'
-    tickers_MACD = pandas.read_csv(crossover_csv)['Symbol']
+    if today + '.csv' in glob.glob('Data/MACD_Crossover/'):
+        crossover_csv = 'Data/MACD_Crossover/' + today + '.csv'
+        tickers_MACD = pandas.read_csv(crossover_csv)['Symbol']
     
     # replace with percentage analysis
     if not os.path.exists('Data/MACD_Crossover/' + today + '.csv' ):
