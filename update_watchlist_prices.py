@@ -22,7 +22,7 @@ hour_minute = now.strftime('%H%M')
 def main():
     response = input('all? ')
     path = 'Data/Watchlist/'
-    if (response == '' or response.lower()[0] == 'y'):
+    if response == '' or response.lower()[0] == 'y':
         csv_files = glob.glob(path + '*.csv')
         progress_bar = progress_bar_mine(max_val=len(csv_files), transfer_speed=False)
         progress_bar.start()

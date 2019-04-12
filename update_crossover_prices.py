@@ -13,6 +13,7 @@ column_name = datetime.now().strftime('%Y-%m-%d')
 warnings.simplefilter(action='ignore', category=FutureWarning)
 time_series = TimeSeries(key='5TBOUP0SFMZDQSWR', output_format='pandas')
 
+# has two large if statements, because of loop in the first
 def main():
     response = input('all? ')
     if (response == '' or response.lower()[0] == 'y'):
@@ -22,14 +23,7 @@ def main():
         for csv_file in csv_files:
             progress_bar.update(csv_files.index(csv_file))
             df = pandas.read_csv(csv_file)
-            tickers = df['Symbol']
-            updated_prices = []
-            for ticker in tickers:
-                try:
-                    updated_prices.append(float(get_ticker_price(ticker)))
-                except:
-                    updated_prices.append('NaN')
-            df[column_name] = updated_prices
+            df[column_name] = get_updated_prices(df)
             if len(df[df[column_name] == 'NaN']) > 0:
                 df.drop(df[df[column_name] == 'NaN'].index, inplace=True)
             gain_values = df[column_name] - df['Close']
@@ -37,30 +31,18 @@ def main():
                 gain_values.iloc[i] = round(gain_values.iloc[i], 2)
             df['Gain'] = gain_values
             gainers = df[df['Gain'] > 0]
-            # keep Gain column last
+            # shift gain column to last column
             if df.keys()[-1] != 'Gain':
                 cols = list(df.keys())
                 cols = cols[:-2] + [cols[-1]] + [cols[-2]]
                 df = df[cols]
-            # print('\nGainers -', csv_file.split('\\')[1][:-4].replace('-', '/'))
-            # print(gainers)
-            # print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
-            # print('\n')
             df.to_csv(csv_file, index=False)
         progress_bar.finish()
-
     elif response.lower()[0] == 'n':
         filename = input("Enter date (YYYY-MM-DD): ")
         filename = path + filename + '.csv'
         df = pandas.read_csv(filename)
-        tickers = df['Symbol']
-        updated_prices = []
-        for ticker in tickers:
-            try:
-                updated_prices.append(float(get_ticker_price(ticker)))
-            except:
-                updated_prices.append('NaN')
-        df[column_name] = updated_prices
+        df[column_name] = get_updated_prices(df)
         if len(df[df[column_name] == 'NaN']) > 0:
             df.drop(df[df[column_name] == 'NaN'].index, inplace=True)
         gain_values = df[column_name] - df['Close']
@@ -97,7 +79,14 @@ def get_ticker_price(ticker):
         header = html.find('div', id="quote-header-info")
         divs = header.find_all('div')
         return(divs[7].find('div').find('span').text)
-
-
+def get_updated_prices(df):
+    tickers = df['Symbol']
+    updated_prices = []
+    for ticker in tickers:
+        try:
+            updated_prices.append(float(get_ticker_price(ticker)))
+        except:
+            updated_prices.append('NaN')
+    return updated_prices
 if __name__ == "__main__":
     main()
