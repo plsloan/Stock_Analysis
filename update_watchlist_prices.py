@@ -14,12 +14,10 @@ import fix_yahoo_finance
 from update_crossover_prices import get_ticker_price
 import analyze_watchlist
 
-now = datetime.now()
-path = 'Data/Watchlist/'
-column_name = now.strftime('%Y-%m-%d')
-hour_minute = now.strftime('%H%M')
-
 def main(continuous=False):
+    now = datetime.now()
+    column_name = now.strftime('%Y-%m-%d')
+    hour_minute = now.strftime('%H%M')
     if not continuous:
         response = input('all? ')
     else: 
@@ -50,10 +48,6 @@ def main(continuous=False):
                 cols = list(df.keys())
                 cols = cols[:-2] + [cols[-1]] + [cols[-2]]
                 df = df[cols]
-            # print('\nGainers -', csv_file.split('\\')[1][:-4].replace('-', '/'))
-            # print(gainers)
-            # print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
-            # print('\n')
             df.to_csv(csv_file[:-4] + '.csv', index=False)
             organize_data(df, csv_file[:-4] + '_' + hour_minute + '.csv')
         progress_bar.finish()
@@ -84,7 +78,8 @@ def main(continuous=False):
         print("\n\nAccuracy:", str("{0:.2f}".format(float(len(gainers)/len(df)*100))) + '%', '(' + str(len(gainers)) + '/' + str(len(df)) + ')')
         df.to_csv(filename[:-4] + '.csv', index=False)
         organize_data(df, filename[:-4] + '_' + hour_minute + '.csv')
-    analyze_watchlist.main()
+    if os.path.exists('Data/Watchlist/' + now.strftime('%Y-%m-%d') + '.csv'):
+        analyze_watchlist.main()
 
 def get_trading_dates():
     end_date = datetime.now()
@@ -105,6 +100,8 @@ def organize_data(data, filename):
         increment_count = increment_count + 1
     should_organize = False
     if increment_count <= 7:
+        if not os.path.exists('Data/Watchlist/' + now.strftime('%Y-%m-%d') + '.csv'):
+                increment_count = increment_count + 1
         if increment_count in [0, 1, 3, 5]:
             path = path + 'Day' + str(increment_count) + '/'
             should_organize = True
@@ -114,7 +111,7 @@ def organize_data(data, filename):
     elif increment_count > 7:
         delta = now - then
         if delta.days % 7 == 0 and delta.days/7 <= 4:
-            path = path + 'Week' + str(int(delta/7)) + '/'
+            path = path + 'Week' + str(int(delta.days/7)) + '/'
             should_organize = True
         elif then.month - now.month == 1 and then.day - now.day == 0:
             path = path + 'Month/'

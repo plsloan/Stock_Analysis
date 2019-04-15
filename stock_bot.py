@@ -23,7 +23,8 @@ import analyze_MACD, analyze_watchlist
 def main():
     today = datetime.datetime.now().strftime('%Y-%m-%d')
     scrape_MACD_crossover.main()
-    update_crossover_prices.main()
+    if datetime.datetime.now().hour in [12, 15]:
+        update_crossover_prices.main()
 
     if today + '.csv' in glob.glob('Data/MACD_Crossover/'):
         crossover_csv = 'Data/MACD_Crossover/' + today + '.csv'
@@ -32,9 +33,11 @@ def main():
     # replace with percentage analysis
     if not os.path.exists('Data/Watchlist/' + today + '.csv'):
         open_MACD_charts.main(already_scraped=True)
-    scrape_symbol_list.main()#tickers=tickers)
-    while datetime.datetime.now().hour >= 9 datetime.datetime.now().hour < 16:
+    
+    while datetime.datetime.now().hour >= 9 and datetime.datetime.now().hour < 16:
+        scrape_symbol_list.main()#tickers=tickers)
         if datetime.datetime.now().minute in [0, 30]:
+            print('\nUpdating ' + datetime.datetime.now().strftime('%H') + ':' + datetime.datetime.now().strftime('%M') + '...')
             update_watchlist_prices.main(continuous=True)
 
 
