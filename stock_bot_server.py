@@ -26,13 +26,13 @@ def main():
     if datetime.datetime.now().hour in [12, 15]:
         update_crossover_prices.main()
 
-    if today + '.csv' in glob.glob('Data/MACD_Crossover/'):
-        crossover_csv = 'Data/MACD_Crossover/' + today + '.csv'
-        tickers_MACD = pandas.read_csv(crossover_csv)['Symbol']
+    # if today + '.csv' in glob.glob('Data/MACD_Crossover/'):
+    #     crossover_csv = 'Data/MACD_Crossover/' + today + '.csv'
+    #     tickers_MACD = pandas.read_csv(crossover_csv)['Symbol']
     
     # replace with percentage analysis
-    if not os.path.exists('Data/Watchlist/' + today + '.csv'):
-        open_MACD_charts.main(already_scraped=True)
+    # if not os.path.exists('Data/Watchlist/' + today + '.csv'):
+    #     open_MACD_charts.main(already_scraped=True)
     
     while True:
         if datetime.datetime.now().hour >= 8 and datetime.datetime.now().hour < 18:
