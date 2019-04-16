@@ -1,247 +1,266 @@
 2019-03-27
 
- * Gainers: 30
- * Losers: 16
- * Total Gain: $55.98
- * Accuracy: 65.22%
+ * Gainers: 26
+ * Losers: 20
+ * Total Gain: $49.96
+ * Accuracy: 56.52%
 
- * Gainers < $25: 12
- * Losers < $25: 4
- * Total Gain: $3.72
- * Accuracy: 75.00%
+ * Gainers < $25: 11
+ * Losers < $25: 5
+ * Total Gain: $4.21
+ * Accuracy: 68.75%
 
- * Gainers > $25: 18
- * Losers > $25: 12
- * Total Gain: $52.26
- * Accuracy: 60.00%
+ * Gainers > $25: 15
+ * Losers > $25: 15
+ * Total Gain: $45.75
+ * Accuracy: 50.00%
 
 
 
 2019-03-28
 
- * Gainers: 25
- * Losers: 12
- * Total Gain: $51.97
- * Accuracy: 67.57%
+ * Gainers: 26
+ * Losers: 11
+ * Total Gain: $56.57
+ * Accuracy: 70.27%
 
- * Gainers < $25: 5
- * Losers < $25: 5
- * Total Gain: $1.08
- * Accuracy: 50.00%
+ * Gainers < $25: 6
+ * Losers < $25: 4
+ * Total Gain: $0.53
+ * Accuracy: 60.00%
 
  * Gainers > $25: 20
  * Losers > $25: 7
- * Total Gain: $50.89
+ * Total Gain: $56.04
  * Accuracy: 74.07%
 
 
 
 2019-03-29
 
- * Gainers: 42
- * Losers: 10
- * Total Gain: $84.12
- * Accuracy: 80.77%
+ * Gainers: 37
+ * Losers: 14
+ * Total Gain: $74.15
+ * Accuracy: 72.55%
 
- * Gainers < $25: 12
- * Losers < $25: 4
- * Total Gain: $7.06
- * Accuracy: 75.00%
+ * Gainers < $25: 13
+ * Losers < $25: 2
+ * Total Gain: $7.56
+ * Accuracy: 86.67%
 
- * Gainers > $25: 30
- * Losers > $25: 6
- * Total Gain: $77.06
- * Accuracy: 83.33%
+ * Gainers > $25: 24
+ * Losers > $25: 12
+ * Total Gain: $66.59
+ * Accuracy: 66.67%
 
 
 
 2019-04-02
 
- * Gainers: 122
- * Losers: 53
- * Total Gain: $158.27
- * Accuracy: 69.71%
+ * Gainers: 121
+ * Losers: 52
+ * Total Gain: $163.09
+ * Accuracy: 69.94%
 
- * Gainers < $25: 30
- * Losers < $25: 14
- * Total Gain: $7.79
- * Accuracy: 68.18%
+ * Gainers < $25: 32
+ * Losers < $25: 12
+ * Total Gain: $10.26
+ * Accuracy: 72.73%
 
- * Gainers > $25: 92
- * Losers > $25: 39
- * Total Gain: $150.48
- * Accuracy: 70.23%
+ * Gainers > $25: 89
+ * Losers > $25: 40
+ * Total Gain: $152.83
+ * Accuracy: 68.99%
 
 
 
 2019-04-03
 
- * Gainers: 125
- * Losers: 28
- * Total Gain: $260.25
- * Accuracy: 81.70%
+ * Gainers: 129
+ * Losers: 24
+ * Total Gain: $301.15
+ * Accuracy: 84.31%
 
- * Gainers < $25: 30
- * Losers < $25: 15
- * Total Gain: $10.45
- * Accuracy: 66.67%
+ * Gainers < $25: 34
+ * Losers < $25: 11
+ * Total Gain: $15.11
+ * Accuracy: 75.56%
 
  * Gainers > $25: 95
  * Losers > $25: 13
- * Total Gain: $249.80
+ * Total Gain: $286.04
  * Accuracy: 87.96%
 
 
 
 2019-04-04
 
- * Gainers: 97
- * Losers: 24
- * Total Gain: $116.16
- * Accuracy: 80.17%
+ * Gainers: 101
+ * Losers: 20
+ * Total Gain: $154.77
+ * Accuracy: 83.47%
 
- * Gainers < $25: 28
- * Losers < $25: 12
- * Total Gain: $6.40
- * Accuracy: 70.00%
+ * Gainers < $25: 29
+ * Losers < $25: 11
+ * Total Gain: $9.92
+ * Accuracy: 72.50%
 
- * Gainers > $25: 69
- * Losers > $25: 12
- * Total Gain: $109.76
- * Accuracy: 85.19%
+ * Gainers > $25: 72
+ * Losers > $25: 9
+ * Total Gain: $144.85
+ * Accuracy: 88.89%
 
 
 
 2019-04-05
 
- * Gainers: 55
- * Losers: 26
- * Total Gain: $28.90
- * Accuracy: 67.90%
+ * Gainers: 57
+ * Losers: 23
+ * Total Gain: $35.37
+ * Accuracy: 71.25%
 
  * Gainers < $25: 25
- * Losers < $25: 15
- * Total Gain: $3.80
- * Accuracy: 62.50%
+ * Losers < $25: 14
+ * Total Gain: $6.71
+ * Accuracy: 64.10%
 
- * Gainers > $25: 30
- * Losers > $25: 11
- * Total Gain: $25.10
- * Accuracy: 73.17%
+ * Gainers > $25: 32
+ * Losers > $25: 9
+ * Total Gain: $28.66
+ * Accuracy: 78.05%
 
 
 
 2019-04-08
 
- * Gainers: 46
- * Losers: 38
- * Total Gain: $8.10
- * Accuracy: 54.76%
+ * Gainers: 48
+ * Losers: 36
+ * Total Gain: $31.05
+ * Accuracy: 57.14%
 
- * Gainers < $25: 16
- * Losers < $25: 20
- * Total Gain: $-6.64
- * Accuracy: 44.44%
+ * Gainers < $25: 17
+ * Losers < $25: 19
+ * Total Gain: $-1.65
+ * Accuracy: 47.22%
 
- * Gainers > $25: 30
- * Losers > $25: 18
- * Total Gain: $14.74
- * Accuracy: 62.50%
+ * Gainers > $25: 31
+ * Losers > $25: 17
+ * Total Gain: $32.70
+ * Accuracy: 64.58%
 
 
 
 2019-04-09
 
- * Gainers: 21
- * Losers: 30
- * Total Gain: $-1.38
- * Accuracy: 41.18%
+ * Gainers: 20
+ * Losers: 31
+ * Total Gain: $-2.01
+ * Accuracy: 39.22%
 
- * Gainers < $25: 11
- * Losers < $25: 17
- * Total Gain: $1.07
- * Accuracy: 39.29%
+ * Gainers < $25: 10
+ * Losers < $25: 18
+ * Total Gain: $1.45
+ * Accuracy: 35.71%
 
  * Gainers > $25: 10
  * Losers > $25: 13
- * Total Gain: $-2.45
+ * Total Gain: $-3.46
  * Accuracy: 43.48%
 
 
 
 2019-04-10
 
- * Gainers: 8
- * Losers: 16
- * Total Gain: $-4.98
- * Accuracy: 33.33%
+ * Gainers: 10
+ * Losers: 13
+ * Total Gain: $-7.25
+ * Accuracy: 43.48%
 
- * Gainers < $25: 3
- * Losers < $25: 14
- * Total Gain: $-3.99
- * Accuracy: 17.65%
+ * Gainers < $25: 6
+ * Losers < $25: 11
+ * Total Gain: $-3.33
+ * Accuracy: 35.29%
 
- * Gainers > $25: 5
+ * Gainers > $25: 4
  * Losers > $25: 2
- * Total Gain: $-0.99
- * Accuracy: 71.43%
+ * Total Gain: $-3.92
+ * Accuracy: 66.67%
 
 
 
 2019-04-11
 
- * Gainers: 9
- * Losers: 19
- * Total Gain: $-32.86
- * Accuracy: 32.14%
+ * Gainers: 10
+ * Losers: 18
+ * Total Gain: $-40.79
+ * Accuracy: 35.71%
 
- * Gainers < $25: 1
- * Losers < $25: 11
- * Total Gain: $-2.20
- * Accuracy: 8.33%
+ * Gainers < $25: 3
+ * Losers < $25: 9
+ * Total Gain: $-2.42
+ * Accuracy: 25.00%
 
- * Gainers > $25: 8
- * Losers > $25: 8
- * Total Gain: $-30.66
- * Accuracy: 50.00%
+ * Gainers > $25: 7
+ * Losers > $25: 9
+ * Total Gain: $-38.37
+ * Accuracy: 43.75%
 
 
 
 2019-04-12
 
- * Gainers: 11
- * Losers: 13
- * Total Gain: $5.18
- * Accuracy: 45.83%
+ * Gainers: 13
+ * Losers: 11
+ * Total Gain: $8.17
+ * Accuracy: 54.17%
 
- * Gainers < $25: 2
- * Losers < $25: 8
- * Total Gain: $-0.39
- * Accuracy: 20.00%
+ * Gainers < $25: 4
+ * Losers < $25: 6
+ * Total Gain: $-1.37
+ * Accuracy: 40.00%
 
  * Gainers > $25: 9
  * Losers > $25: 5
- * Total Gain: $5.57
+ * Total Gain: $9.54
  * Accuracy: 64.29%
 
 
 
 2019-04-15
 
- * Gainers: 17
- * Losers: 33
- * Total Gain: $-11.26
- * Accuracy: 34.00%
+ * Gainers: 21
+ * Losers: 29
+ * Total Gain: $-12.81
+ * Accuracy: 42.00%
 
  * Gainers < $25: 5
  * Losers < $25: 8
- * Total Gain: $-1.01
+ * Total Gain: $-0.59
  * Accuracy: 38.46%
 
- * Gainers > $25: 12
- * Losers > $25: 25
- * Total Gain: $-10.25
- * Accuracy: 32.43%
+ * Gainers > $25: 16
+ * Losers > $25: 21
+ * Total Gain: $-12.22
+ * Accuracy: 43.24%
+
+
+
+2019-04-16
+
+ * Gainers: 11
+ * Losers: 15
+ * Total Gain: $1.60
+ * Accuracy: 42.31%
+
+ * Gainers < $25: 2
+ * Losers < $25: 3
+ * Total Gain: $0.37
+ * Accuracy: 40.00%
+
+ * Gainers > $25: 9
+ * Losers > $25: 12
+ * Total Gain: $1.23
+ * Accuracy: 42.86%
 
 
 
