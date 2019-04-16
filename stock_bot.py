@@ -34,11 +34,10 @@ def main():
         scrape_symbol_list.main()#tickers=tickers)
 
     while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) < datetime.time(16, 5) and datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) > datetime.time(7, 59):
-        if datetime.datetime.now().hour in [15]:
+        if datetime.datetime.now().hour in [15] and datetime.datetime.now().minute in [15]:
             update_crossover_prices.main(all=True)
         hour = datetime.datetime.now().hour
         minute = datetime.datetime.now().minute
-        hour_minute = datetime.datetime.now().strftime('%H%M')
         today = datetime.datetime.now().strftime('%Y-%m-%d')
         filename = datetime.datetime.now().strftime('%Y-%m-%d_%H%M') + '.csv'
         if hour in [10, 12, 2, 4] and minute in [0]:
