@@ -4,7 +4,7 @@ import pandas
 from requests import get
 from bs4 import BeautifulSoup
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 
 from progressbar_mine import progress_bar_mine
@@ -100,8 +100,8 @@ def organize_data(data, filename):
         increment_count = increment_count + 1
     should_organize = False
     if increment_count <= 7:
-        if not os.path.exists('Data/Watchlist/' + now.strftime('%Y-%m-%d') + '.csv'):
-                increment_count = increment_count + 1
+        if (time(datetime.now().hour, datetime.now().minute) < time(9, 30)) or (not os.path.exists('Data/Watchlist/' + now.strftime('%Y-%m-%d') + '.csv')):
+            increment_count = increment_count + 1
         if increment_count in [0, 1, 3, 5]:
             path = path + 'Day' + str(increment_count) + '/'
             should_organize = True
@@ -110,12 +110,13 @@ def organize_data(data, filename):
             should_organize = True
     elif increment_count > 7:
         delta = now - then
-        if delta.days % 7 == 0 and delta.days/7 <= 4:
-            path = path + 'Week' + str(int(delta.days/7)) + '/'
-            should_organize = True
-        elif then.month - now.month == 1 and then.day - now.day == 0:
-            path = path + 'Month/'
-            should_organize = True
+        if int(delta.days/7) > 0:
+            if delta.days % 7 == 0 and delta.days/7 <= 4:
+                path = path + 'Week' + str(int(delta.days/7)) + '/'
+                should_organize = True
+            elif then.month - now.month == 1 and then.day - now.day == 0:
+                path = path + 'Month/'
+                should_organize = True
     if should_organize:
         filename = path + filename.split('/')[-1].split('_')[0] + '/' + filename.split('/')[-1]
         if not os.path.exists('/'.join(filename.split('/')[:-1])):

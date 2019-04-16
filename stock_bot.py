@@ -34,11 +34,18 @@ def main():
     if not os.path.exists('Data/Watchlist/' + today + '.csv'):
         open_MACD_charts.main(already_scraped=True)
     
-    while datetime.datetime.now().hour >= 9 and datetime.datetime.now().hour < 16:
+    while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) < datetime.time(16, 5) and datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) > datetime.time(7, 59):
         scrape_symbol_list.main()#tickers=tickers)
-        if datetime.datetime.now().minute in [0, 30]:
-            print('\nUpdating ' + datetime.datetime.now().strftime('%H') + ':' + datetime.datetime.now().strftime('%M') + '...')
-            update_watchlist_prices.main(continuous=True)
+        hour = datetime.datetime.now().hour
+        minute = datetime.datetime.now().minute
+        hour_minute = datetime.datetime.now().strftime('%H%M')
+        today = datetime.datetime.now().strftime('%Y-%m-%d')
+        filename = datetime.datetime.now().strftime('%Y-%m-%d_%H%M') + '.csv'
+        if hour in [10, 12, 2, 4] and minute == 0:
+            filename = 'Data/Watchlist/Day0/' + today + '/' + filename
+            if not os.path.exists(filename):
+                print('\nUpdating ' + datetime.datetime.now().strftime('%H:%M') + '...')
+                update_watchlist_prices.main(continuous=True)
 
 
     # if MACD_crossover(data) and bollinger_crossdown(data) and has_momentum(data):
@@ -365,7 +372,6 @@ def getScore(analysis):
     if analysis[5].lower() == 'oversold':                   score = score + 3
     elif analysis[5].lower() == 'normal':                   score = score + 2  
     return score    
-
 def MACD_crossover(data):
     for i in range(5, 1, -1):
         if data['MACD'][-1*i] <= data['Signal'][-1*i] and data['MACD'][-1*i+1] > data['Signal'][-1*i+1]:
