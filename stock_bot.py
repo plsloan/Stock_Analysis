@@ -35,7 +35,7 @@ def main():
 
     while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) < datetime.time(16, 5) and datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) > datetime.time(7, 59):
         if datetime.datetime.now().hour in [15]:
-            update_crossover_prices.main()
+            update_crossover_prices.main(all=True)
         hour = datetime.datetime.now().hour
         minute = datetime.datetime.now().minute
         hour_minute = datetime.datetime.now().strftime('%H%M')
