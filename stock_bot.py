@@ -23,8 +23,6 @@ import analyze_MACD, analyze_watchlist
 def main():
     today = datetime.datetime.now().strftime('%Y-%m-%d')
     scrape_MACD_crossover.main()
-    if datetime.datetime.now().hour in [12, 15]:
-        update_crossover_prices.main()
 
     if today + '.csv' in glob.glob('Data/MACD_Crossover/'):
         crossover_csv = 'Data/MACD_Crossover/' + today + '.csv'
@@ -33,15 +31,17 @@ def main():
     # replace with percentage analysis
     if not os.path.exists('Data/Watchlist/' + today + '.csv'):
         open_MACD_charts.main(already_scraped=True)
-    
-    while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) < datetime.time(16, 5) and datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) > datetime.time(7, 59):
         scrape_symbol_list.main()#tickers=tickers)
+
+    while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) < datetime.time(16, 5) and datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) > datetime.time(7, 59):
+        if datetime.datetime.now().hour in [15]:
+            update_crossover_prices.main()
         hour = datetime.datetime.now().hour
         minute = datetime.datetime.now().minute
         hour_minute = datetime.datetime.now().strftime('%H%M')
         today = datetime.datetime.now().strftime('%Y-%m-%d')
         filename = datetime.datetime.now().strftime('%Y-%m-%d_%H%M') + '.csv'
-        if hour in [10, 12, 2, 4] and minute == 0:
+        if hour in [10, 12, 2, 4] and minute in [0]:
             filename = 'Data/Watchlist/Day0/' + today + '/' + filename
             if not os.path.exists(filename):
                 print('\nUpdating ' + datetime.datetime.now().strftime('%H:%M') + '...')

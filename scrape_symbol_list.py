@@ -15,18 +15,16 @@ warnings.simplefilter("ignore")
 
 def main(tickers=None):
     today = datetime.now().strftime('%Y-%m-%d')
-    if not os.path.exists('Data/Watchlist/' + today + '.csv' ):
-        # get 
-        if tickers == None:
-            tickers = input('Enter list of symbols (separated by space): ').split(' ')
-        tickers.sort()
-        progress_bar = progress_bar_mine(len(tickers))
-        progress_bar.start()
-        for i in range(len(tickers)):
-            progress_bar.update(i)
-            scrape_symbol(tickers[i])
-        progress_bar.finish()
-        compile_file(tickers)
+    if tickers == None:
+        tickers = input('Enter list of symbols (separated by space): ').split(' ')
+    tickers.sort()
+    progress_bar = progress_bar_mine(len(tickers))
+    progress_bar.start()
+    for i in range(len(tickers)):
+        progress_bar.update(i)
+        scrape_symbol(tickers[i])
+    progress_bar.finish()
+    compile_file(tickers)
 
 def scrape_symbol(ticker):
     path = 'Data/Watchlist/Temp/'

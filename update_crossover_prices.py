@@ -14,8 +14,11 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 time_series = TimeSeries(key='5TBOUP0SFMZDQSWR', output_format='pandas')
 
 # has two large if statements, because of loop in the first
-def main():
-    response = input('all? ')
+def main(all=False):
+    if all:
+        response = 'y'
+    else:
+        response = input('all? ')
     if (response == '' or response.lower()[0] == 'y'):
         csv_files = glob.glob(path + '*.csv')
         progress_bar = progress_bar_mine(max_val=len(csv_files), transfer_speed=False)
