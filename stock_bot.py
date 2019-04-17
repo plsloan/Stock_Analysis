@@ -12,7 +12,7 @@ from progressbar_mine import progress_bar_mine
 from scrape_exchange import scrape_historical_data
 from get_indicators import getBollingerBand, getMACD, getRSI, getEMA
 from get_symbols import getRobinhoodSymbols, get_nasdaq_tickers, get_nyse_tickers
-# warnings.simplefilter("ignore")
+warnings.simplefilter("ignore")
 
 import scrape_MACD_crossover, update_crossover_prices
 import open_MACD_charts
@@ -33,7 +33,7 @@ def main():
         open_MACD_charts.main(already_scraped=True)
         scrape_symbol_list.main()#tickers=tickers)
 
-    while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) < datetime.time(16, 5) and datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) > datetime.time(7, 59):
+    while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) < datetime.time(16, 5) and datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) > datetime.time(7, 0):
         if datetime.datetime.now().hour in [15] and datetime.datetime.now().minute in [15]:
             update_crossover_prices.main(all=True)
         hour = datetime.datetime.now().hour
