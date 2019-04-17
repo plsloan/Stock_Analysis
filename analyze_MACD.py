@@ -23,7 +23,8 @@ def main():
         gainers_above25 = gainers[gainers['Close'] > 25.0]
         losers_under25 = losers[losers['Close'] <= 25.0]
         losers_above25 = losers[losers['Close'] > 25.0]
-        content = content + csv.split('\\')[1][:-4] + '\n\n'
+        csv = csv.replace('\\', '/')
+        content = content + csv.split('/')[-1][:-4] + '\n\n'
         content = addToContent(content, ' * Gainers: ', gainers)
         content = addToContent(content, ' * Losers: ', losers)
         content = content + ' * Total Gain: ' + '$' + str("{0:.2f}".format(df['Gain'].sum())) + '\n'

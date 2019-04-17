@@ -34,7 +34,8 @@ def analyze(path, glob, main_folder=False):
                 gainers_above25 = gainers[gainers['Close'] > 25.0]
                 losers_under25 = losers[losers['Close'] <= 25.0]
                 losers_above25 = losers[losers['Close'] > 25.0]
-                content = content + csv.split('\\')[1][:-4] + '\n\n'
+                csv = csv.replace('\\', '/')
+                content = content + csv.split('/')[-1][:-4] + '\n\n'
                 if len(gainers) > 0:
                     content = addToContent(content, ' * Gainers: ', gainers)
                 if len(losers) > 0:
@@ -71,7 +72,8 @@ def analyze(path, glob, main_folder=False):
             gainers_above25 = gainers[gainers['Close'] > 25.0]
             losers_under25 = losers[losers['Close'] <= 25.0]
             losers_above25 = losers[losers['Close'] > 25.0]
-            content = content + csv.split('\\')[1][:-4] + '\n\n'
+            csv = csv.replace('\\', '/')
+            content = content + csv.split('/')[-1][:-4] + '\n\n'
             if len(gainers) > 0:
                 content = addToContent(content, ' * Gainers: ', gainers)
             if len(losers) > 0:
