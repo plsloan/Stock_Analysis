@@ -42,7 +42,7 @@ def main():
         minute = now.minute
         today = now.strftime('%Y-%m-%d')
         filename = now.strftime('%Y-%m-%d_%H%M') + '.csv'
-        if hour in [9, 10, 12, 14, 16] and minute in [0]:
+        if hour in [8, 9, 10, 12, 14, 16, 18] and minute in [0]:
             filename = 'Data/Watchlist/Day0/' + today + '/' + filename
             if not os.path.exists(filename):
                 print('\nUpdating ' + datetime.datetime.now().strftime('%H:%M') + '...')
