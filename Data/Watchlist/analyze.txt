@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 2019-04-01
 
  * Gainers: 4
@@ -63,20 +64,35 @@
  * Losers: 2
  * Total Gain: $-0.40
  * Accuracy: 0.00%
+=======
+2019-04-24
+
+ * Gainers: 2
+ * Losers: 2
+ * Total Gain: $-0.25
+ * Accuracy: 50.00%
+>>>>>>> Stashed changes
 
 
 
 
-2019-04-10
+2019-04-17
 
+<<<<<<< Updated upstream
  * Gainers: 1
  * Losers: 3
  * Total Gain: $-1.21
  * Accuracy: 25.00%
+=======
+ * Losers: 1
+ * Total Gain: $-0.79
+ * Accuracy: 0.00%
+>>>>>>> Stashed changes
 
 
 
 
+<<<<<<< Updated upstream
 2019-04-11
 
  * Gainers: 1
@@ -93,21 +109,34 @@
  * Losers: 1
  * Total Gain: $-0.03
  * Accuracy: 50.00%
+=======
+2019-04-23
+
+ * Gainers: 2
+ * Losers: 1
+ * Total Gain: $-0.44
+ * Accuracy: 66.67%
+>>>>>>> Stashed changes
 
 
 
 
-2019-04-15
+2019-04-19
 
  * Losers: 1
+<<<<<<< Updated upstream
  * Total Gain: $-0.09
+=======
+ * Total Gain: $0.00
+>>>>>>> Stashed changes
  * Accuracy: 0.00%
 
 
 
 
-2019-04-16
+2019-04-18
 
+<<<<<<< Updated upstream
  * Losers: 1
  * Total Gain: $-0.04
  * Accuracy: 0.00%
@@ -138,9 +167,19 @@
  * Losers: 3
  * Total Gain: $-0.38
  * Accuracy: 0.00%
+=======
+ * Gainers: 1
+ * Losers: 1
+ * Total Gain: $-0.84
+ * Accuracy: 50.00%
+>>>>>>> Stashed changes
 
 
 
 
+<<<<<<< Updated upstream
 Total Gain for Data/Watchlist/: $12.03
+=======
+Total Gain for Data/Watchlist/: $-2.32
+>>>>>>> Stashed changes
 

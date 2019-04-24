@@ -1,5 +1,6 @@
-2019-03-27
+2019-04-24
 
+<<<<<<< Updated upstream
  * Gainers: 24
  * Losers: 19
  * Total Gain: $78.94
@@ -128,11 +129,38 @@
  * Losers > $25: 9
  * Total Gain: $52.83
  * Accuracy: 78.05%
+=======
+ * Gainers: 28
+ * Losers: 31
+ * Total Gain: $-0.05
+ * Accuracy: 47.46%
+
+ * Gainers < $25: 9
+ * Losers < $25: 14
+ * Total Gain: $0.34
+ * Accuracy: 39.13%
+
+ * Gainers > $25: 19
+ * Losers > $25: 17
+ * Total Gain: $-0.39
+ * Accuracy: 52.78%
 
 
+>>>>>>> Stashed changes
 
-2019-04-08
+2019-03-31
 
+ * Gainers: 52
+ * Losers: 23
+ * Total Gain: $224.61
+ * Accuracy: 69.33%
+
+ * Gainers < $25: 8
+ * Losers < $25: 10
+ * Total Gain: $2.66
+ * Accuracy: 44.44%
+
+<<<<<<< Updated upstream
  * Gainers: 51
  * Losers: 31
  * Total Gain: $41.07
@@ -147,11 +175,23 @@
  * Losers > $25: 16
  * Total Gain: $36.43
  * Accuracy: 65.96%
+=======
+ * Gainers > $25: 44
+ * Losers > $25: 13
+ * Total Gain: $221.95
+ * Accuracy: 77.19%
+
+>>>>>>> Stashed changes
 
 
+2019-04-17
 
-2019-04-09
+ * Gainers: 9
+ * Losers: 9
+ * Total Gain: $25.04
+ * Accuracy: 50.00%
 
+<<<<<<< Updated upstream
  * Gainers: 22
  * Losers: 28
  * Total Gain: $-1.72
@@ -166,11 +206,28 @@
  * Losers > $25: 12
  * Total Gain: $-1.29
  * Accuracy: 45.45%
+=======
+ * Gainers < $25: 0
+ * Losers < $25: 7
+ * Total Gain: $-3.11
+ * Accuracy: 0.00%
+
+ * Gainers > $25: 9
+ * Losers > $25: 2
+ * Total Gain: $28.15
+ * Accuracy: 81.82%
+
+>>>>>>> Stashed changes
 
 
+2019-04-23
 
-2019-04-10
+ * Gainers: 16
+ * Losers: 23
+ * Total Gain: $-8.76
+ * Accuracy: 41.03%
 
+<<<<<<< Updated upstream
  * Gainers: 8
  * Losers: 15
  * Total Gain: $-11.63
@@ -185,11 +242,23 @@
  * Losers > $25: 4
  * Total Gain: $-6.77
  * Accuracy: 33.33%
+=======
+ * Gainers < $25: 8
+ * Losers < $25: 15
+ * Total Gain: $-0.51
+ * Accuracy: 34.78%
+
+ * Gainers > $25: 8
+ * Losers > $25: 8
+ * Total Gain: $-8.25
+ * Accuracy: 50.00%
+>>>>>>> Stashed changes
 
 
 
-2019-04-11
+2019-04-19
 
+<<<<<<< Updated upstream
  * Gainers: 12
  * Losers: 16
  * Total Gain: $-62.72
@@ -204,11 +273,28 @@
  * Losers > $25: 7
  * Total Gain: $-62.09
  * Accuracy: 56.25%
+=======
+ * Gainers: 14
+ * Losers: 16
+ * Total Gain: $9.00
+ * Accuracy: 46.67%
+
+ * Gainers < $25: 5
+ * Losers < $25: 11
+ * Total Gain: $-2.29
+ * Accuracy: 31.25%
+
+ * Gainers > $25: 9
+ * Losers > $25: 5
+ * Total Gain: $11.29
+ * Accuracy: 64.29%
+>>>>>>> Stashed changes
 
 
 
-2019-04-12
+2019-03-28
 
+<<<<<<< Updated upstream
  * Gainers: 12
  * Losers: 12
  * Total Gain: $13.95
@@ -223,11 +309,28 @@
  * Losers > $25: 5
  * Total Gain: $15.65
  * Accuracy: 64.29%
+=======
+ * Gainers: 37
+ * Losers: 21
+ * Total Gain: $117.00
+ * Accuracy: 63.79%
+
+ * Gainers < $25: 12
+ * Losers < $25: 6
+ * Total Gain: $10.39
+ * Accuracy: 66.67%
+
+ * Gainers > $25: 25
+ * Losers > $25: 15
+ * Total Gain: $106.61
+ * Accuracy: 62.50%
+>>>>>>> Stashed changes
 
 
 
-2019-04-15
+2019-04-18
 
+<<<<<<< Updated upstream
  * Gainers: 29
  * Losers: 20
  * Total Gain: $4.30
@@ -242,11 +345,28 @@
  * Losers > $25: 14
  * Total Gain: $3.40
  * Accuracy: 61.11%
+=======
+ * Gainers: 15
+ * Losers: 18
+ * Total Gain: $9.17
+ * Accuracy: 45.45%
+
+ * Gainers < $25: 6
+ * Losers < $25: 6
+ * Total Gain: $-1.94
+ * Accuracy: 50.00%
+
+ * Gainers > $25: 9
+ * Losers > $25: 12
+ * Total Gain: $11.11
+ * Accuracy: 42.86%
+>>>>>>> Stashed changes
 
 
 
 2019-04-16
 
+<<<<<<< Updated upstream
  * Gainers: 9
  * Losers: 17
  * Total Gain: $-9.71
@@ -261,11 +381,28 @@
  * Losers > $25: 13
  * Total Gain: $-10.77
  * Accuracy: 38.10%
+=======
+ * Gainers: 12
+ * Losers: 14
+ * Total Gain: $6.46
+ * Accuracy: 46.15%
+
+ * Gainers < $25: 2
+ * Losers < $25: 3
+ * Total Gain: $0.96
+ * Accuracy: 40.00%
+
+ * Gainers > $25: 10
+ * Losers > $25: 11
+ * Total Gain: $5.50
+ * Accuracy: 47.62%
+>>>>>>> Stashed changes
 
 
 
-2019-04-17
+2019-03-29
 
+<<<<<<< Updated upstream
  * Gainers: 10
  * Losers: 10
  * Total Gain: $19.87
@@ -337,6 +474,22 @@
  * Losers > $25: 10
  * Total Gain: $-1.80
  * Accuracy: 37.50%
+=======
+ * Gainers: 56
+ * Losers: 21
+ * Total Gain: $233.41
+ * Accuracy: 72.73%
+
+ * Gainers < $25: 9
+ * Losers < $25: 9
+ * Total Gain: $3.10
+ * Accuracy: 50.00%
+
+ * Gainers > $25: 47
+ * Losers > $25: 12
+ * Total Gain: $230.31
+ * Accuracy: 79.66%
+>>>>>>> Stashed changes
 
 
 
