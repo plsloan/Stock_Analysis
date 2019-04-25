@@ -33,7 +33,7 @@ def main():
         open_MACD_charts.main(already_scraped=True)
         scrape_symbol_list.main()#tickers=tickers)
 
-    while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) < datetime.time(16, 5) and datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) > datetime.time(7, 0):
+    while datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) < datetime.time(18, 5) and datetime.time(datetime.datetime.now().hour, datetime.datetime.now().minute) > datetime.time(7, 0):
         if datetime.datetime.now().hour in [15] and datetime.datetime.now().minute in [15]:
             print('\nUpdating MACD crossover list...')
             update_crossover_prices.main(all=True)
