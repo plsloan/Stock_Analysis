@@ -39,3 +39,7 @@ def getMACD(data):
     macd = getEMA_set(data, 12) - getEMA_set(data, 26)
     sig  = macd.ewm(span=9, min_periods=0, adjust=False, ignore_na=True).mean()
     return macd, sig
+def get_daily_returns(data):
+    return (data/data.shift(1)) - 1
+def get_cumulative_returns(data):
+    return (data.iloc[-1]/data.iloc[0]) - 1
