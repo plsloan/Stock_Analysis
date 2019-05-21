@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, time
 from dateutil.relativedelta import relativedelta
 
-from progressbar_mine import progress_bar_mine
+from _lib.progressbar_mine import progress_bar_mine
 from pandas_datareader import data as pdr
 import fix_yahoo_finance
 

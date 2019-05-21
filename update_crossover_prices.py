@@ -4,7 +4,7 @@ import warnings
 from requests import get
 from datetime import datetime
 from bs4 import BeautifulSoup
-from progressbar_mine import progress_bar_mine
+from _lib.progressbar_mine import progress_bar_mine
 from alpha_vantage.timeseries import TimeSeries
 import analyze_MACD
 

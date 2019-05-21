@@ -3,7 +3,7 @@ import pandas
 from requests import get 
 from datetime import datetime
 from iexfinance import get_stats_daily
-from progressbar_mine import progress_bar_mine
+from _lib.progressbar_mine import progress_bar_mine
 from alpha_vantage.timeseries import TimeSeries
 from get_symbols import get_nasdaq_tickers, get_nyse_tickers
 

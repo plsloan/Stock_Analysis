@@ -8,7 +8,7 @@ import webbrowser as browser
 import matplotlib.pyplot as plt
 from pandas_datareader import data as web
 
-from progressbar_mine import progress_bar_mine
+from _lib.progressbar_mine import progress_bar_mine
 from scrape_exchange import scrape_historical_data
 from get_indicators import getBollingerBand, getMACD, getRSI, getEMA
 from get_symbols import getRobinhoodSymbols, get_nasdaq_tickers, get_nyse_tickers

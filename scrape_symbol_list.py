@@ -2,14 +2,13 @@ import pandas
 import shutil
 import warnings
 
-from datetime import datetime
-from requests import get 
-from progressbar_mine import progress_bar_mine
-
 import os
 from os import listdir
+from requests import get 
+from datetime import datetime
 from os.path import isfile, join
 
+from _lib.progressbar_mine import progress_bar_mine
 from update_crossover_prices import get_ticker_price
 warnings.simplefilter("ignore")
 
