@@ -1,6 +1,6 @@
 from db_connect import db
 from iexfinance.refdata import get_symbols
-from my_enums import Exchange
+from my_enums import Exchange, StockColumn
 from utils import convert_dataframe_to_document
 from yfinance import Ticker
 
@@ -15,14 +15,14 @@ def initialize_stocks():
     # Insert exchange, symbol, and name for stocks
     for s in get_symbols():
         db.Stocks.insert_one({
-            'Exchange': s['exchange'],
-            'Symbol': s['symbol'],
-            'Name': s['name'],
-            'Records': []
+            StockColumn.Exchange.name: s['exchange'],
+            StockColumn.Symbol.name: s['symbol'],
+            StockColumn.Name.name: s['name'],
+            StockColumn.Records.name: []
         })
     # Remove all with exchanges that are not Nasdaq or NYSE
     db.Stocks.delete_many({
-        'Exchange': {
+        StockColumn.Exchange.name: {
             '$nin': [
                 Exchange.Nasdaq.value[0],
                 Exchange.Nyse.value[0]
@@ -38,13 +38,14 @@ def update_stock_records():
         try:
             stock = Ticker(sym).history(period='1y')
             db.Stocks.update_one(
-                {'Symbol': sym},
-                {'$set': {'Records': convert_dataframe_to_document(stock)}}
+                {StockColumn.Symbol.name: sym},
+                {'$set': {
+                    StockColumn.Records.name: convert_dataframe_to_document(stock)}}
             )
         except:
             db.Stocks.update_one(
-                {'Symbol': sym},
-                {'$set': {'Records': []}}
+                {StockColumn.Symbol.name: sym},
+                {'$set': {StockColumn.Records.name: []}}
             )
 
 
@@ -62,7 +63,7 @@ def delete_stock_records():
     try:
         db.Stocks.update_many(
             {},
-            {'$set': {'Records': []}}
+            {'$set': {StockColumn.Records.name: []}}
         )
         print('Cleared stock records.\n')
     except:
@@ -78,18 +79,21 @@ def print_stocks(exchange=None):
         exchange (optional)
     '''
     if exchange:
-        stocks = db.Stocks.find({'Exchange': exchange.value})
+        stocks = db.Stocks.find({StockColumn.Exchange.name: exchange.value})
         print('\n' + exchange.name)
         print('---------------------\n')
         for s in stocks:
-            print(s['Symbol'] + ' - ' + s['Name'])
+            print(s[StockColumn.Symbol.name] +
+                  ' - ' + s[StockColumn.Name.name])
     else:
         for exchange in Exchange:
-            stocks = db.Stocks.find({'Exchange': exchange.value})
+            stocks = db.Stocks.find(
+                {StockColumn.Exchange.name: exchange.value})
             print('\n' + exchange.name)
             print('---------------------\n')
             for s in stocks:
-                print(s['Symbol'] + ' - ' + s['Name'])
+                print(s[StockColumn.Symbol.name] +
+                      ' - ' + s[StockColumn.Name.name])
 
 
 def query_as_dataframe(query_results):
@@ -106,7 +110,7 @@ def query_as_dataframe(query_results):
             query_results as pandas DataFrame
     '''
     df = pd.DataFrame(list(query_results))
-    del df['_id']
+    del df[StockColumn._id.name]
     return df
 
 
@@ -125,7 +129,7 @@ def get_records_from_dataframe(df, col, value):
     -------
         records_df
     '''
-    records = df[df[col] == value]['Records']
+    records = df[df[col] == value][StockColumn.Records.name]
     if len(records) == 1:
         return pd.DataFrame(records.iloc[0])
     elif len(records) == 0:

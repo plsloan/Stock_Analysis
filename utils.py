@@ -1,4 +1,5 @@
 from get_indicators import getSMA, getEMA, getBollingerBand, getMACD, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
+from my_enums import StockColumn, StockRecordsColumn
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 import numpy as np
 
@@ -15,39 +16,39 @@ def convert_dataframe_to_document(df):
     df = calculate_adjusted_prices(df)
 
     # add SMAs
-    df['SMA 5'] = getSMA(df, 5)
-    df['SMA 20'] = getSMA(df, 20)
-    df['SMA 50'] = getSMA(df, 50)
+    df[StockRecordsColumn.SMA_5.name] = getSMA(df, 5)
+    df[StockRecordsColumn.SMA_20.name] = getSMA(df, 20)
+    df[StockRecordsColumn.SMA_50.name] = getSMA(df, 50)
 
     # add EMAs
-    df['EMA 5'] = getEMA(df, 5)
-    df['EMA 20'] = getEMA(df, 20)
-    df['EMA 50'] = getEMA(df, 50)
+    df[StockRecordsColumn.EMA_5.name] = getEMA(df, 5)
+    df[StockRecordsColumn.EMA_20.name] = getEMA(df, 20)
+    df[StockRecordsColumn.EMA_50.name] = getEMA(df, 50)
 
     # add bollinger bands
     upper, center, lower = getBollingerBand(df)
-    df['Bollinger Band - Upper'] = upper
-    df['Bollinger Band - Center'] = center
-    df['Bollinger Band - Lower'] = lower
+    df[StockRecordsColumn.BollingerBand_Upper.name] = upper
+    df[StockRecordsColumn.BollingerBand_Center.name] = center
+    df[StockRecordsColumn.BollingerBand_Lower.name] = lower
 
     # add MACD
     macd, signal = getMACD(df)
-    df['MACD - MACD'] = macd
-    df['MACD - Signal'] = signal
+    df[StockRecordsColumn.MACD_Value.name] = macd
+    df[StockRecordsColumn.MACD_Signal.name] = signal
 
     # price ratios
-    df['Price / SMA ratio'] = price_sma_ratio(df)
-    df['Price / EMA ratio'] = price_ema_ratio(df)
+    df[StockRecordsColumn.Price_SMA_Ratio.name] = price_sma_ratio(df)
+    df[StockRecordsColumn.Price_EMA_Ratio.name] = price_ema_ratio(df)
 
     # add bollinger percentage
-    df['Bollinger Percentage'] = bollinger_percentage(df)
+    df[StockRecordsColumn.BollingerPercentage.name] = bollinger_percentage(df)
 
-    df['Stochastic Band'] = stochastic_band(df)
+    df[StockRecordsColumn.StochasticBands.name] = stochastic_band(df)
 
     document = []
     for i in range(len(df)):
         record = {}
-        record['Date'] = str(df.iloc[i].name)[:-9]
+        record[StockRecordsColumn.Date.name] = str(df.iloc[i].name)[:-9]
         for k in df.keys():
             record[k] = df.iloc[i][k]
         document.append(record)
@@ -65,16 +66,16 @@ def calculate_adjusted_prices(df):
         values
     :return: DataFrame with the addition of the adjusted price column
     """
-    column = 'Close'
-    adj_column = 'Adjusted Close'
-    dividends_column = 'Dividends'
-    splits_column = 'Stock Splits'
+    column = StockRecordsColumn.Close.name
+    adj_column = StockRecordsColumn.AdjustedClose.name
+    dividends_column = StockRecordsColumn.Dividends.name
+    splits_column = StockRecordsColumn.StockSplits.name
 
     # Reverse the DataFrame order, sorting by date in descending order
     df.sort_index(ascending=False, inplace=True)
 
     price_col = df[column].values
-    split_col = (df[splits_column] + 1.).values
+    split_col = (df['Stock Splits'] + 1.).values
     dividend_col = df[dividends_column].values
     adj_price_col = np.zeros(len(df.index))
     adj_price_col[0] = price_col[0]
