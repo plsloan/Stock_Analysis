@@ -1,3 +1,4 @@
+from get_indicators import getSMA, getEMA, getBollingerBand, getMACD, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 import numpy as np
 
@@ -12,6 +13,37 @@ def get_command():
 
 def convert_dataframe_to_document(df):
     df = calculate_adjusted_prices(df)
+
+    # add SMAs
+    df['SMA 5'] = getSMA(df, 5)
+    df['SMA 20'] = getSMA(df, 20)
+    df['SMA 50'] = getSMA(df, 50)
+
+    # add EMAs
+    df['EMA 5'] = getEMA(df, 5)
+    df['EMA 20'] = getEMA(df, 20)
+    df['EMA 50'] = getEMA(df, 50)
+
+    # add bollinger bands
+    upper, center, lower = getBollingerBand(df)
+    df['Bollinger Band - Upper'] = upper
+    df['Bollinger Band - Center'] = center
+    df['Bollinger Band - Lower'] = lower
+
+    # add MACD
+    macd, signal = getMACD(df)
+    df['MACD - MACD'] = macd
+    df['MACD - Signal'] = signal
+
+    # price ratios
+    df['Price / SMA ratio'] = price_sma_ratio(df)
+    df['Price / EMA ratio'] = price_ema_ratio(df)
+
+    # add bollinger percentage
+    df['Bollinger Percentage'] = bollinger_percentage(df)
+
+    df['Stochastic Band'] = stochastic_band(df)
+
     document = []
     for i in range(len(df)):
         record = {}
