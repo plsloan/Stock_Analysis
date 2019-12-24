@@ -44,9 +44,9 @@ class StrategyLearner(object):
         factors = sma_ratio.join([ema_ratio, boll_percentage, stochastic])
         factors.dropna(inplace=True)
 
-        prices_all = prices_all.loc[factors.index]  # strip down prices
-        prices_sym = prices_all[symbol]  # only portfolio symbols
-        prices_spy = prices_all['SPY']  # only SPY, for comparison later
+        # strip down prices
+        prices_sym = prices_sym.loc[factors.index]
+        prices_spy = prices_spy.loc[factors.index]
 
         ints = []
         thresholds = []
@@ -89,7 +89,7 @@ class StrategyLearner(object):
     def testPolicy(self, symbol="JPM", sd=dt.datetime(2010, 1, 1), ed=dt.datetime(2011, 12, 31), sv=10000):
         # here we build a fake set of trades
         # your code should return the same sort of data
-        self.learner.rar = 0
+        # self.learner.rar = 0
         dates = pd.date_range(sd, ed)
         prices_sym = get_data(symbol, dates)
         prices_spy = get_data('SPY', dates)
@@ -108,9 +108,9 @@ class StrategyLearner(object):
         factors = sma_ratio.join([ema_ratio, boll_percentage, stochastic])
         factors.dropna(inplace=True)
 
-        prices_all = prices_all.loc[factors.index]  # strip down prices
-        prices_sym = prices_all[symbol]  # only portfolio symbols
-        prices_spy = prices_all['SPY']  # only SPY, for comparison later
+        # strip down prices
+        prices_sym = prices_sym.loc[factors.index]
+        prices_spy = prices_spy.loc[factors.index]
 
         ints = []
         thresholds = []
@@ -159,7 +159,7 @@ class StrategyLearner(object):
         return trades_df
 
     def benchmark(self, symbol="JPM", sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2011, 12, 31), sv=100000, impact=0.0):
-        prices_df = get_data([symbol], pd.date_range(sd, ed))
+        prices_df = get_data(symbol, pd.date_range(sd, ed))
         prices_df['cash'] = 1.0
         prices_df.sort_index()
 
@@ -218,11 +218,6 @@ def addCashColumn(trades_df, prices_df, impact, symbol):
 
 
 if __name__ == "__main__":
-    # sma_ratio = pd.read_csv('sma_ratio.csv', index_col='date')
-    # ema_ratio = pd.read_csv('ema_ratio.csv', index_col='date')
-    # boll_percentage = pd.read_csv('boll_percentage.csv', index_col='date')
-    # stochastic = pd.read_csv('stochastic.csv', index_col='date')
-
     start_train = dt.datetime(2008, 1, 1)
     end_train = dt.datetime(2009, 12, 31)
     start_test = dt.datetime(2010, 1, 1)
@@ -233,7 +228,7 @@ if __name__ == "__main__":
     impact = 0.0
     symbol = 'JPM'
 
-    prices_df = get_data([symbol], pd.date_range(start_train, end_train))
+    prices_df = get_data(symbol, pd.date_range(start_train, end_train))
 
     learner = StrategyLearner(dyna=200, bins=5)
 
@@ -241,7 +236,7 @@ if __name__ == "__main__":
         iterations=10, sd=start_train, ed=end_train)
     train_trades = addCashColumn(train_trades, prices_df, impact, symbol)
 
-    prices_df = get_data([symbol], pd.date_range(start_test, end_test))
+    prices_df = get_data(symbol, pd.date_range(start_test, end_test))
 
     test1_trades = learner.testPolicy(
         symbol=symbol, sd=start_test, ed=end_test)
