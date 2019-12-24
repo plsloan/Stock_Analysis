@@ -79,11 +79,18 @@ def initialize_stocks():
     db.Stocks.delete_many({
         StockColumn.Exchange.name: {
             '$nin': [
-                Exchange.Nasdaq.value[0],
-                Exchange.Nyse.value[0]
+                Exchange.Nasdaq.value,
+                Exchange.Nyse.value
             ]
         }
     })
+    if len(db.Stocks.find_one({StockColumn.Symbol.name: "SPY"})) == 0:
+        db.Stocks.insert_one({
+            StockColumn.Exchange.name: 'NYS',
+            StockColumn.Symbol.name: 'SPY',
+            StockColumn.Name.name: 'S&P 500',
+            StockColumn.Records.name: []
+        })
 
 
 def print_stocks(exchange=None):
