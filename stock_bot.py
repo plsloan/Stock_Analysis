@@ -1,10 +1,8 @@
-from datetime import datetime
 from db_connect import db
-from db_utils import *
+from db_utils import delete_stock_records, delete_stocks, initialize_stocks, print_stocks, update_stock_records, get_data
 from my_enums import Exchange
 from utils import get_command, strip_string
 import textwrap
-
 
 def main():
     if db.Stocks.count_documents({}) == 0:

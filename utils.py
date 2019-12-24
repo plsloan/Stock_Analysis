@@ -4,12 +4,39 @@ from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 import numpy as np
 
 
-def strip_string(s):
-    return s.replace(' ', '').replace('\t', '')
+def calculate_adjusted_prices(df):
+    """ Vectorized approach for calculating the adjusted prices for the
+    specified column in the provided DataFrame. This creates a new column
+    called 'adj_<column name>' with the adjusted prices. This function requires
+    that the DataFrame have columns with dividend and split_ratio values.
 
 
-def get_command():
-    return strip_string(input('StockBot: ').lower())
+    :param df: DataFrame with raw prices along with dividend and split_ratio
+        values
+    :return: DataFrame with the addition of the adjusted price column
+    """
+    column = StockRecordsColumn.Close.name
+    adj_column = StockRecordsColumn.AdjustedClose.name
+    dividends_column = StockRecordsColumn.Dividends.name
+    splits_column = StockRecordsColumn.StockSplits.name
+
+    # Reverse the DataFrame order, sorting by date in descending order
+    df.sort_index(ascending=False, inplace=True)
+
+    price_col = df[column].values
+    split_col = (df['Stock Splits'] + 1.).values
+    dividend_col = df[dividends_column].values
+    adj_price_col = np.zeros(len(df.index))
+    adj_price_col[0] = price_col[0]
+
+    for i in range(1, len(price_col)):
+        val = adj_price_col[i - 1] + adj_price_col[i - 1] * (
+            ((price_col[i] * split_col[i - 1]) - price_col[i - 1] - dividend_col[i - 1]) / price_col[i - 1])
+        adj_price_col[i] = round(val, 2)
+
+    df[adj_column] = adj_price_col
+
+    return df
 
 
 def convert_dataframe_to_document(df):
@@ -55,39 +82,12 @@ def convert_dataframe_to_document(df):
     return document
 
 
-def calculate_adjusted_prices(df):
-    """ Vectorized approach for calculating the adjusted prices for the
-    specified column in the provided DataFrame. This creates a new column
-    called 'adj_<column name>' with the adjusted prices. This function requires
-    that the DataFrame have columns with dividend and split_ratio values.
+def get_command():
+    return strip_string(input('StockBot: ').lower())
 
 
-    :param df: DataFrame with raw prices along with dividend and split_ratio
-        values
-    :return: DataFrame with the addition of the adjusted price column
-    """
-    column = StockRecordsColumn.Close.name
-    adj_column = StockRecordsColumn.AdjustedClose.name
-    dividends_column = StockRecordsColumn.Dividends.name
-    splits_column = StockRecordsColumn.StockSplits.name
-
-    # Reverse the DataFrame order, sorting by date in descending order
-    df.sort_index(ascending=False, inplace=True)
-
-    price_col = df[column].values
-    split_col = (df['Stock Splits'] + 1.).values
-    dividend_col = df[dividends_column].values
-    adj_price_col = np.zeros(len(df.index))
-    adj_price_col[0] = price_col[0]
-
-    for i in range(1, len(price_col)):
-        val = adj_price_col[i - 1] + adj_price_col[i - 1] * (
-            ((price_col[i] * split_col[i - 1]) - price_col[i - 1] - dividend_col[i - 1]) / price_col[i - 1])
-        adj_price_col[i] = round(val, 2)
-
-    df[adj_column] = adj_price_col
-
-    return df
+def strip_string(s):
+    return s.replace(' ', '').replace('\t', '')
 
 
 class progress_bar_mine:

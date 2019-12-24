@@ -1,11 +1,66 @@
 from db_connect import db
 from iexfinance.refdata import get_symbols
-from my_enums import Exchange, StockColumn
+from my_enums import Exchange, StockColumn, StockRecordsColumn
 from utils import convert_dataframe_to_document
 from yfinance import Ticker
 
 import json
 import pandas as pd
+
+
+def delete_stocks():
+    '''Deletes all stocks.'''
+    try:
+        db.Stocks.delete_many({})
+        print('Cleared all stocks.\n')
+    except:
+        print('An error occurred when clearing stocks.\n')
+
+
+def delete_stock_records():
+    '''Sets Records to empty list for all stocks.'''
+    try:
+        db.Stocks.update_many(
+            {},
+            {'$set': {StockColumn.Records.name: []}}
+        )
+        print('Cleared stock records.\n')
+    except:
+        print('An error occurred when clearing stock records.\n')
+
+
+def get_data(symbol, dates):
+    stock = db.Stocks.find_one({StockColumn.Symbol.name: symbol})
+    df = pd.DataFrame(stock[StockColumn.Records.name])
+    df[StockRecordsColumn.Date.name] = df[StockRecordsColumn.Date.name].astype(
+        'datetime64[ns]')
+    indexed_df = df.set_index(StockRecordsColumn.Date.name)
+    in_range_df = indexed_df.loc[indexed_df.index.isin(dates)]
+    return in_range_df.sort_index(ascending=False)
+
+
+def get_records_from_dataframe(df, col, value):
+    '''
+    Parameters
+    ----------
+        df
+            pandas DataFrame
+        col
+            StockColumn name
+        value
+            value for Column lookup
+
+    Returns
+    -------
+        records_df
+    '''
+    records = df[df[col] == value][StockColumn.Records.name]
+    if len(records) == 1:
+        return pd.DataFrame(records.iloc[0])
+    elif len(records) == 0:
+        print('No stocks were matched.')
+    else:
+        print('More than one stock was matched.')
 
 
 def initialize_stocks():
@@ -29,45 +84,6 @@ def initialize_stocks():
             ]
         }
     })
-
-
-def update_stock_records():
-    '''Update all stock records from Yahoo API.'''
-    symbols = db.Stocks.distinct('Symbol')
-    for sym in symbols:
-        try:
-            stock = Ticker(sym).history(period='1y')
-            db.Stocks.update_one(
-                {StockColumn.Symbol.name: sym},
-                {'$set': {
-                    StockColumn.Records.name: convert_dataframe_to_document(stock)}}
-            )
-        except:
-            db.Stocks.update_one(
-                {StockColumn.Symbol.name: sym},
-                {'$set': {StockColumn.Records.name: []}}
-            )
-
-
-def delete_stocks():
-    '''Deletes all stocks.'''
-    try:
-        db.Stocks.delete_many({})
-        print('Cleared all stocks.\n')
-    except:
-        print('An error occurred when clearing stocks.\n')
-
-
-def delete_stock_records():
-    '''Sets Records to empty list for all stocks.'''
-    try:
-        db.Stocks.update_many(
-            {},
-            {'$set': {StockColumn.Records.name: []}}
-        )
-        print('Cleared stock records.\n')
-    except:
-        print('An error occurred when clearing stock records.\n')
 
 
 def print_stocks(exchange=None):
@@ -114,25 +130,19 @@ def query_as_dataframe(query_results):
     return df
 
 
-def get_records_from_dataframe(df, col, value):
-    '''
-    Parameters
-    ----------
-        df
-            pandas DataFrame
-        col
-            StockColumn name
-        value
-            value for Column lookup
-
-    Returns
-    -------
-        records_df
-    '''
-    records = df[df[col] == value][StockColumn.Records.name]
-    if len(records) == 1:
-        return pd.DataFrame(records.iloc[0])
-    elif len(records) == 0:
-        print('No stocks were matched.')
-    else:
-        print('More than one stock was matched.')
+def update_stock_records():
+    '''Update all stock records from Yahoo API.'''
+    symbols = db.Stocks.distinct('Symbol')
+    for sym in symbols:
+        try:
+            stock = Ticker(sym).history(period='1y')
+            db.Stocks.update_one(
+                {StockColumn.Symbol.name: sym},
+                {'$set': {
+                    StockColumn.Records.name: convert_dataframe_to_document(stock)}}
+            )
+        except:
+            db.Stocks.update_one(
+                {StockColumn.Symbol.name: sym},
+                {'$set': {StockColumn.Records.name: []}}
+            )
