@@ -1,13 +1,11 @@
+from db.utils import get_data
+from QLearner import QLearner
+from marketsimcode import compute_portvals
+from get_indicators import get_daily_returns, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
 import datetime as dt
 import numpy as np
 import pandas as pd
 import random
-import warnings
-
-from db_utils import get_data
-from QLearner import QLearner
-from marketsimcode import compute_portvals
-from get_indicators import get_daily_returns, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
 
 
 class StrategyLearner(object):
@@ -15,11 +13,11 @@ class StrategyLearner(object):
     # constructor
     def __init__(self, num_states=9999, num_actions=3, alpha=0.2,
                  gamma=0.9, rar=0.5, radr=0.99, dyna=200, verbose=False, impact=0.0, bins=8):
-        self.verbose = verbose
+        self.bins = bins
         self.impact = impact
+        self.verbose = verbose
         self.learner = QLearner(num_states=9999, num_actions=3,
                                 dyna=dyna, alpha=alpha, gamma=gamma, rar=rar, radr=radr)
-        self.bins = bins
 
     # this method should create a QLearner, and train it for trading
     def addEvidence(self, symbol="JPM", sd=dt.datetime(2008, 1, 1), ed=dt.datetime(2009, 12, 31), sv=10000, iterations=5, impact=0.0):
@@ -63,7 +61,7 @@ class StrategyLearner(object):
         # learning cycle
         for i in range(iterations):
             trades_df = pd.DataFrame(index=prices_sym.index, columns=[symbol])
-            a = self.learner.querysetstate(states[0])
+            a = self.learner.query_set_state(states[0])
             trades_df = self.handleAction(
                 a, trades_df, symbol, prices_sym.index[0])
             len_states = len(states)
@@ -199,22 +197,6 @@ def addCashColumn(trades_df, prices_df, impact, symbol):
     trades_df.loc[sell_indices]['cash'] = -1 * trades_df[symbol].loc[sell_indices] * \
         prices_df[symbol].loc[sell_indices] * (1 - impact)
     return trades_df
-
-
-# def convertOrders(orders):
-#     symbol = orders['Symbol'].dropna().iloc[0]
-#     trades_df = pd.DataFrame(index=orders.index)
-#     trades_df[symbol] = orders['Shares']
-
-#     nans = pd.isnull(orders)
-#     nan_loc = nans[nans['Order'] == True].index
-#     sell_loc = orders[orders['Order'] == 'SELL'].index
-
-#     if len(sell_loc) > 0:
-#         trades_df.loc[sell_loc] = -1000
-#     if len(nan_loc) > 0:
-#         trades_df.loc[nan_loc] = 0
-#     return trades_df
 
 
 if __name__ == "__main__":

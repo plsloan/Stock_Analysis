@@ -1,31 +1,3 @@
-"""
-Template for implementing QLearner  (c) 2015 Tucker Balch
-
-Copyright 2018, Georgia Institute of Technology (Georgia Tech)
-Atlanta, Georgia 30332
-All Rights Reserved
-
-Template code for CS 4646/7646
-
-Georgia Tech asserts copyright ownership of this template and all derivative
-works, including solutions to the projects assigned in this course. Students
-and other users of this template code are advised not to share it with others
-or to make it available on publicly viewable websites including repositories
-such as github and gitlab.  This copyright statement should not be removed
-or edited.
-
-We do grant permission to share solutions privately with non-students such
-as potential employers. However, sharing with other current or future
-students of CS 7646 is prohibited and subject to being investigated as a
-GT honor code violation.
-
------do not edit anything above this line---
-
-Student Name: Phillip Sloan (replace with your name)
-GT User ID: psloan31 (replace with your User ID)
-GT ID: 903452647 (replace with your GT ID)		  		 			 	 	 		 		 	  		   	  			  	
-"""
-
 import numpy as np
 import random as rand
 
@@ -35,22 +7,22 @@ class QLearner(object):
     # radr = random action decay rate
     def __init__(self, num_states=100, num_actions=4, alpha=0.2,
                  gamma=0.9, rar=0.5, radr=0.99, dyna=200, verbose=False):
-        self.num_states = num_states
-        self.num_actions = num_actions
         self.alpha = alpha
-        self.gamma = gamma
-        self.rar = rar
-        self.radr = radr
         self.dyna = dyna
+        self.gamma = gamma
+        self.num_actions = num_actions
+        self.num_states = num_states
+        self.radr = radr
+        self.rar = rar
         self.verbose = verbose
 
-        self.s = 0
         self.a = 0
+        self.s = 0
         self.Q = np.zeros((num_states, num_actions))
         self.R = np.zeros((num_states, num_actions))
         self.T = np.zeros((num_states, num_actions, num_states))
 
-    def querysetstate(self, s):
+    def query_set_state(self, s):
         """
         @summary: Update the state without updating the Q-table
         @param s: The new state
