@@ -43,3 +43,29 @@ class StockRecordsColumn(Enum):
     Price_EMA_Ratio = 21
     BollingerPercentage = 22
     StochasticBands = 23
+
+
+class LearnerColumn(Enum):
+    Symbol = 0
+    Data = 1
+
+
+class LearnerDataColumn(Enum):
+    # Strategy Learner
+    bins = 0
+    impact = 1
+    verbose = 2
+    alpha = 3
+    dyna = 4
+    gamma = 5
+    num_actions = 6
+    num_states = 7
+    radr = 8
+    rar = 9
+
+    # QLearner
+    a = 10
+    s = 11
+    Q = 12
+    R = 13
+    T = 14
