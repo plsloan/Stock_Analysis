@@ -1,9 +1,7 @@
-from db_connect import db
+from db.connect import db
 from iexfinance.refdata import get_symbols
-from my_enums import Exchange, StockColumn, StockRecordsColumn
-from utils import convert_dataframe_to_document
+from my_enums import Exchange, LearnerColumn, LearnerDataColumn, StockColumn, StockRecordsColumn
 from yfinance import Ticker
-
 import json
 import pandas as pd
 
@@ -29,7 +27,7 @@ def delete_stock_records():
         print('An error occurred when clearing stock records.\n')
 
 
-def get_data(symbol, dates):
+def get_all_data(symbol, dates):
     stock = db.Stocks.find_one({StockColumn.Symbol.name: symbol})
     df = pd.DataFrame(stock[StockColumn.Records.name])
     df[StockRecordsColumn.Date.name] = df[StockRecordsColumn.Date.name].astype(
@@ -37,6 +35,29 @@ def get_data(symbol, dates):
     indexed_df = df.set_index(StockRecordsColumn.Date.name)
     in_range_df = indexed_df.loc[indexed_df.index.isin(dates)]
     return in_range_df.sort_index(ascending=False)
+
+
+def get_data(symbols, dates, addSPY=True, colname=StockRecordsColumn.AdjustedClose.name):
+    """Read stock data (adjusted close) for given symbols from CSV files."""
+    df = pd.DataFrame(index=dates)
+    if addSPY and 'SPY' not in symbols:  # add SPY for reference, if absent
+        symbols = ['SPY'] + symbols
+
+    for symbol in symbols:
+        stock = db.Stocks.find_one({StockColumn.Symbol.name: symbol})
+        df_temp = pd.DataFrame(stock[StockColumn.Records.name])
+        df_temp[StockRecordsColumn.Date.name] = df_temp[StockRecordsColumn.Date.name].astype(
+            'datetime64[ns]')
+        indexed_df = df_temp.set_index(StockRecordsColumn.Date.name)
+        in_range_df = indexed_df.loc[indexed_df.index.isin(dates)]
+        sorted_df = in_range_df.sort_index(ascending=False)
+
+        df[symbol] = sorted_df[colname]
+
+        if symbol == 'SPY':  # drop dates SPY did not trade
+            df = df.dropna(subset=["SPY"])
+
+    return df
 
 
 def get_records_from_dataframe(df, col, value):
@@ -93,6 +114,35 @@ def initialize_stocks():
         })
 
 
+def load_learners():
+    from strategy_learner import StrategyLearner
+
+    documents = db.Learners.find({})
+    learners = []
+    for d in documents:
+        data = d[LearnerColumn.Data.name]
+        this_learner = StrategyLearner(
+            bins=data[LearnerDataColumn.bins.name],
+            impact=data[LearnerDataColumn.impact.name],
+            verbose=data[LearnerDataColumn.verbose.name],
+            alpha=data[LearnerDataColumn.alpha.name],
+            dyna=data[LearnerDataColumn.dyna.name],
+            gamma=data[LearnerDataColumn.gamma.name],
+            num_actions=data[LearnerDataColumn.num_actions.name],
+            num_states=data[LearnerDataColumn.num_states.name],
+            rar=data[LearnerDataColumn.rar.name],
+            radr=data[LearnerDataColumn.radr.name]
+        )
+        this_learner.learner.a = data[LearnerDataColumn.a.name]
+        this_learner.learner.s = data[LearnerDataColumn.s.name]
+        this_learner.learner.Q = data[LearnerDataColumn.Q.name]
+        this_learner.learner.R = data[LearnerDataColumn.R.name]
+        this_learner.learner.T = data[LearnerDataColumn.T.name]
+        this_learner.learner.verbose = data[LearnerDataColumn.verbose.name]
+        learners.append(this_learner)
+    return learners
+
+
 def print_stocks(exchange=None):
     '''Print all stocks from exchange.
     If no exchange is given, it prints all stocks.
@@ -139,6 +189,8 @@ def query_as_dataframe(query_results):
 
 def update_stock_records():
     '''Update all stock records from Yahoo API.'''
+    from utils import convert_dataframe_to_document
+
     symbols = db.Stocks.distinct('Symbol')
     for sym in symbols:
         try:
