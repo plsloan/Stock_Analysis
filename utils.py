@@ -1,7 +1,22 @@
+from copy import deepcopy
+from db.connect import db
 from get_indicators import getSMA, getEMA, getBollingerBand, getMACD, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
 from my_enums import StockColumn, StockRecordsColumn
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
+from QLearner import QLearner
+from strategy_learner import StrategyLearner
+import matplotlib.pyplot as plt
 import numpy as np
+
+
+def build_bot(bots, symbol):
+    # TODO: get num_indicators dynamically
+    num_indicators = 4
+    num_states = (int)('9'*num_indicators)
+    bot = StrategyLearner(num_states=num_states)
+    bot.learner = generate_learner(bot.learner)
+    bots[symbol] = bot
+    return bots
 
 
 def calculate_adjusted_prices(df):
@@ -82,8 +97,117 @@ def convert_dataframe_to_document(df):
     return document
 
 
+def generate_learner(learner):
+    new_learner = QLearner(
+        num_states=learner.num_states,
+        num_actions=learner.num_actions,
+        alpha=learner.alpha,
+        gamma=learner.gamma,
+        rar=learner.rar,
+        radr=learner.radr,
+        dyna=learner.dyna,
+        verbose=learner.verbose
+    )
+
+    # db.LearnerData
+
+    return new_learner
+
+
 def get_command():
-    return strip_string(input('StockBot: ').lower())
+    return input('StockBot: ').lower().split(' ')
+
+
+def plot_data(df, title="Stock prices", xlabel="Date", ylabel="Price"):
+    """Plot stock prices with a custom title and meaningful axis labels."""
+    ax = df.plot(title=title, fontsize=12)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    plt.show()
+
+
+def print_time():
+    from datetime import datetime as dt
+    print(dt.now().strftime('%H:%M:%S'))
+
+
+def run_stock_bot():
+    import textwrap
+    from db.utils import delete_stock_records, delete_stocks, initialize_stocks, load_learners, print_stocks, update_stock_records
+    from my_enums import Exchange, LearnerColumn, LearnerDataColumn
+
+    commands = textwrap.dedent('''
+    Commands
+    --------
+     * delete stocks - delete all stock
+     * delete records - delete all stock records
+     * get suggestions - prints all
+     * print stocks - prints stocks from a given exchange
+     * train learners - trains all learners
+     * update records - update stock records
+     * cls - clears terminal
+     * help - prints available commands
+    ''')
+
+    print(commands)
+
+    user_input = get_command()
+    while user_input != ['exit']:
+        if user_input == ['delete', 'stocks']:
+            user_input = input(textwrap.dedent('''
+                WARNING: This will delete all stocks and their records from the database
+                Are you sure you want to delete all the stocks? ''')).strip().lower()
+            if user_input[0] == 'y':
+                delete_stocks()
+                pass
+            else:
+                print()
+        elif user_input == ['delete', 'records']:
+            user_input = input(textwrap.dedent('''
+                WARNING: This will delete all stocks and their records from the database
+                Are you sure you want to delete all the stocks? ''')).strip().lower()
+            if user_input[0] == 'y':
+                delete_stock_records()
+                pass
+            else:
+                print()
+        elif user_input == ['get', 'suggestions']:
+            # output stats
+            if '-v' in user_input:
+                raise NotImplementedError
+            # just output suggestions
+            else:
+                raise NotImplementedError
+        elif user_input == ['print', 'stocks']:
+            print('Pick exchange (left side)\n')
+            for exchange in Exchange:
+                print(str(exchange.value) + ': ' + exchange.name)
+            print('all: Get all stocks in all available exchanges\n')
+            user_input = input('Exchange: ').strip()
+            if user_input == 'all':
+                print_stocks()
+            else:
+                try:
+                    print_stocks(Exchange(user_input))
+                except:
+                    print('Exchange not found.')
+            print()
+        elif all(item in user_input for item in ['train', 'learners']):
+            pass
+        elif user_input == ['update', 'records']:
+            try:
+                update_stock_records()
+            except:
+                print('Could not update stock records.')
+        elif user_input == ['cls']:
+            print('\n'*100)
+        elif user_input == ['help']:
+            print(commands)
+        elif user_input == ['']:
+            pass
+        else:
+            print('Command not found.\n')
+        user_input = get_command()
 
 
 def strip_string(s):
