@@ -8,6 +8,13 @@
       "name": "Python: Current File",
       "type": "python",
       "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: Stock Bot",
+      "type": "python",
+      "request": "launch",
       "program": "${workspaceFolder}/stock_bot.py",
       "console": "integratedTerminal"
     }
