@@ -1,22 +1,7 @@
-from copy import deepcopy
 from db.connect import db
 from get_indicators import getSMA, getEMA, getBollingerBand, getMACD, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
-from my_enums import StockColumn, StockRecordsColumn
+from my_enums import StockRecordsColumn
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
-from QLearner import QLearner
-from strategy_learner import StrategyLearner
-import matplotlib.pyplot as plt
-import numpy as np
-
-
-def build_bot(bots, symbol):
-    # TODO: get num_indicators dynamically
-    num_indicators = 4
-    num_states = (int)('9'*num_indicators)
-    bot = StrategyLearner(num_states=num_states)
-    bot.learner = generate_learner(bot.learner)
-    bots[symbol] = bot
-    return bots
 
 
 def calculate_adjusted_prices(df):
@@ -30,6 +15,7 @@ def calculate_adjusted_prices(df):
         values
     :return: DataFrame with the addition of the adjusted price column
     """
+    import numpy as np
     column = StockRecordsColumn.Close.name
     adj_column = StockRecordsColumn.AdjustedClose.name
     dividends_column = StockRecordsColumn.Dividends.name
@@ -98,6 +84,7 @@ def convert_dataframe_to_document(df):
 
 
 def generate_learner(learner):
+    from QLearner import QLearner
     new_learner = QLearner(
         num_states=learner.num_states,
         num_actions=learner.num_actions,
@@ -119,6 +106,7 @@ def get_command():
 
 
 def plot_data(df, title="Stock prices", xlabel="Date", ylabel="Price"):
+    import matplotlib.pyplot as plt
     """Plot stock prices with a custom title and meaningful axis labels."""
     ax = df.plot(title=title, fontsize=12)
     ax.set_xlabel(xlabel)
