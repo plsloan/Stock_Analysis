@@ -103,29 +103,32 @@ def initialize_stocks():
     '''Clear and initialize database.'''
     # Clear db.Stocks
     db.Stocks.delete_many({})
-    # Insert exchange, symbol, and name for stocks
-    for s in get_symbols():
-        db.Stocks.insert_one({
-            StockColumn.Exchange.name: s['exchange'],
-            StockColumn.Symbol.name: s['symbol'],
-            StockColumn.Name.name: s['name'],
-            StockColumn.Records.name: []
-        })
+    # Insert initial state for stocks
+    for index, row in get_stock_dataframe().iterrows():
+        if row['exchangeShortName'] and row['name'] and row['symbol']:
+            db.Stocks.insert_one({
+                StockColumn.Exchange.name: row['exchangeShortName'].strip(),
+                StockColumn.LearnerId.name: None,
+                StockColumn.Name.name: row['name'].strip(),
+                StockColumn.RecordIds.name: None,
+                StockColumn.Symbol.name: row['symbol'].strip()
+            })
     # Remove all with exchanges that are not Nasdaq or NYSE
     db.Stocks.delete_many({
         StockColumn.Exchange.name: {
             '$nin': [
                 Exchange.Nasdaq.value,
-                Exchange.Nyse.value
+                Exchange.NewYorkStockExchange.value
             ]
         }
     })
-    if len(db.Stocks.find_one({StockColumn.Symbol.name: "SPY"})) == 0:
+    if db.Stocks.find_one({StockColumn.Symbol.name: "SPY"}):
         db.Stocks.insert_one({
             StockColumn.Exchange.name: 'NYS',
-            StockColumn.Symbol.name: 'SPY',
+            StockColumn.LearnerId.name: None,
             StockColumn.Name.name: 'S&P 500',
-            StockColumn.Records.name: []
+            StockColumn.RecordIds.name: None,
+            StockColumn.Symbol.name: 'SPY'
         })
 
 
