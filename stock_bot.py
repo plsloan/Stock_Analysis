@@ -10,8 +10,8 @@ def main():
     if db.Stocks.count_documents({}) == 0:
         initialize_stocks()
 
-    # if db.Learners.count_documents({}) == 0:
-    #     initialize_learners()
+    if db.Learners.count_documents({}) == 0:
+        initialize_learners()
 
     # learners = load_learners()
 

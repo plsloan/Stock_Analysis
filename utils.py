@@ -118,14 +118,15 @@ def print_time():
 
 def run_stock_bot():
     import textwrap
-    from db.utils import delete_stock_records, delete_stocks, initialize_stocks, load_learners, print_stocks, update_stock_records
-    from my_enums import Exchange, LearnerColumn, LearnerDataColumn
+    from db.utils import delete_learners, delete_stocks, delete_stock_records, initialize_stocks, load_learners, print_stocks, update_stock_records
+    from my_enums import Exchange, LearnerColumn, LearnerFunctionInputsColumn, LearnerVariablesColumn
 
     commands = textwrap.dedent('''
     Commands
     --------
-     * delete stocks - delete all stock
+     * delete learners - delete all stock learners
      * delete records - delete all stock records
+     * delete stocks - delete all stock
      * get suggestions - prints all
      * print stocks - prints stocks from a given exchange
      * train learners - trains all learners
@@ -138,7 +139,16 @@ def run_stock_bot():
 
     user_input = get_command()
     while user_input != ['exit']:
-        if user_input == ['delete', 'stocks']:
+        if user_input == ['delete', 'learners']:
+            user_input = input(textwrap.dedent('''
+                WARNING: This will delete all stocks learners and their data from the database
+                Are you sure you want to delete all the stock learners? ''')).strip().lower()
+            if user_input[0] == 'y':
+                delete_learners()
+                pass
+            else:
+                print()
+        elif user_input == ['delete', 'stocks']:
             user_input = input(textwrap.dedent('''
                 WARNING: This will delete all stocks and their records from the database
                 Are you sure you want to delete all the stocks? ''')).strip().lower()

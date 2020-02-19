@@ -44,12 +44,12 @@ class StockRecordsColumn(Enum):
 
 
 class LearnerColumn(Enum):
-    Symbol = 0
-    Data = 1
+    LearnerInputsId = 0
+    LearnerVariablesId = 1
+    Symbol = 2
 
 
-class LearnerDataColumn(Enum):
-    # Strategy Learner
+class LearnerFunctionInputsColumn(Enum):
     alpha = 0
     bins = 1
     dyna = 2
@@ -61,7 +61,8 @@ class LearnerDataColumn(Enum):
     rar = 8
     verbose = 9
 
-    # QLearner
+
+class LearnerVariablesColumn(Enum):
     a = 10
     s = 11
     Q = 12
