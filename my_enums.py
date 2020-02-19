@@ -15,34 +15,35 @@ class StockColumn(Enum):
     Exchange = 1
     Symbol = 2
     Name = 3
-    Records = 4
+    RecordIds = 4
+    LearnerId = 5
 
 
 class StockRecordsColumn(Enum):
-    Date = 0
-    Open = 1
-    Close = 2
-    High = 3
-    Low = 4
-    Volume = 5
-    Dividends = 6
-    StockSplits = 7
-    AdjustedClose = 8
-    SMA_5 = 9
-    SMA_20 = 10
-    SMA_50 = 11
-    EMA_5 = 12
-    EMA_20 = 13
-    EMA_50 = 14
-    BollingerBand_Upper = 15
-    BollingerBand_Center = 16
-    BollingerBand_Lower = 17
-    MACD_Value = 18
-    MACD_Signal = 19
-    Price_SMA_Ratio = 20
-    Price_EMA_Ratio = 21
-    BollingerPercentage = 22
-    StochasticBands = 23
+    AdjustedClose = 0
+    BollingerBand_Center = 1
+    BollingerBand_Lower = 2
+    BollingerBand_Upper = 3
+    BollingerPercentage = 4
+    Close = 5
+    Date = 6
+    Dividends = 7
+    EMA_20 = 8
+    EMA_5 = 9
+    EMA_50 = 10
+    High = 11
+    Low = 12
+    MACD_Signal = 13
+    MACD_Value = 14
+    Open = 15
+    Price_EMA_Ratio = 16
+    Price_SMA_Ratio = 17
+    SMA_20 = 18
+    SMA_5 = 19
+    SMA_50 = 20
+    StochasticBands = 21
+    StockSplits = 22
+    Volume = 23
 
 
 class LearnerColumn(Enum):
@@ -52,16 +53,16 @@ class LearnerColumn(Enum):
 
 class LearnerDataColumn(Enum):
     # Strategy Learner
-    bins = 0
-    impact = 1
-    verbose = 2
-    alpha = 3
-    dyna = 4
-    gamma = 5
-    num_actions = 6
-    num_states = 7
-    radr = 8
-    rar = 9
+    alpha = 0
+    bins = 1
+    dyna = 2
+    gamma = 3
+    impact = 4
+    num_actions = 5
+    num_states = 6
+    radr = 7
+    rar = 8
+    verbose = 9
 
     # QLearner
     a = 10
