@@ -191,14 +191,14 @@ def update_stock_records():
     '''Update all stock records from Yahoo API.'''
     from utils import convert_dataframe_to_document
 
-    symbols = db.Stocks.distinct('Symbol')
-    for sym in symbols:
+    for sym in get_stock_symbols():
         try:
             stock = Ticker(sym).history(period='1y')
+            record_doc = convert_dataframe_to_document(stock)
             db.Stocks.update_one(
                 {StockColumn.Symbol.name: sym},
                 {'$set': {
-                    StockColumn.Records.name: convert_dataframe_to_document(stock)}}
+                    StockColumn.Records.name: record_doc}}
             )
         except:
             db.Stocks.update_one(
