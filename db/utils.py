@@ -84,6 +84,10 @@ def get_records_from_dataframe(df, col, value):
         print('More than one stock was matched.')
 
 
+def get_stock_symbols():
+    return db.Stocks.distinct('Symbol')
+
+
 def initialize_stocks():
     '''Clear and initialize database.'''
     # Clear db.Stocks
