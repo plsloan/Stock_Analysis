@@ -1,5 +1,4 @@
 from db.connect import db
-from iexfinance.refdata import get_symbols
 from my_enums import Exchange, LearnerColumn, LearnerDataColumn, StockColumn, StockRecordsColumn
 from yfinance import Ticker
 import json
@@ -84,7 +83,19 @@ def get_records_from_dataframe(df, col, value):
         print('More than one stock was matched.')
 
 
-def get_stock_symbols():
+def get_stock_dataframe():
+    import requests
+    url = 'https://financialmodelingprep.com/api/v3/search?query='
+    result = requests.get(url)
+    return pd.DataFrame(result.json())
+
+
+def get_symbols():
+    stock_df = get_stock_dataframe()
+    return stock_df.sort_values('symbol')['symbol']
+
+
+def get_symbols_db():
     return db.Stocks.distinct('Symbol')
 
 
@@ -195,7 +206,7 @@ def update_stock_records():
     '''Update all stock records from Yahoo API.'''
     from utils import convert_dataframe_to_document
 
-    for sym in get_stock_symbols():
+    for sym in get_symbols_db():
         try:
             stock = Ticker(sym).history(period='1y')
             record_doc = convert_dataframe_to_document(stock)
