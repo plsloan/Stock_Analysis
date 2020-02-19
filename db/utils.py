@@ -4,6 +4,7 @@ from my_enums import Exchange, LearnerColumn, LearnerDataColumn, StockColumn, St
 from yfinance import Ticker
 import json
 import pandas as pd
+import numpy as np
 
 
 def delete_stocks():
@@ -115,6 +116,51 @@ def initialize_stocks():
             StockColumn.Symbol.name: 'SPY',
             StockColumn.Name.name: 'S&P 500',
             StockColumn.Records.name: []
+        })
+
+
+def initialize_learners():
+    '''Clear and initialize learners'''
+    from bson.binary import Binary
+    import pickle
+
+    db.Learners.delete_many({})
+    db.QTable.delete_many({})
+    db.RTable.delete_many({})
+    db.TTable.delete_many({})
+    num_indicators = 2
+    num_states = (int)('9'*num_indicators)
+    num_actions = 3
+    for s in get_stock_symbols():
+        db.Learners.insert_one({
+            LearnerColumn.Symbol.name: s,
+            LearnerColumn.Data.name: {
+                LearnerDataColumn.bins.name: 8,
+                LearnerDataColumn.impact.name: 0.0,
+                LearnerDataColumn.verbose.name: False,
+                LearnerDataColumn.alpha.name: 0.2,
+                LearnerDataColumn.dyna.name: 200,
+                LearnerDataColumn.gamma.name: 0.9,
+                LearnerDataColumn.num_actions.name: num_actions,
+                LearnerDataColumn.num_states.name: num_states,
+                LearnerDataColumn.radr.name: 0.99,
+                LearnerDataColumn.rar.name: 0.5,
+                LearnerDataColumn.a.name: 0,
+                LearnerDataColumn.s.name: 0
+            }
+        })
+        db.QTable.insert_one({
+            LearnerColumn.Symbol.name: s,
+            LearnerDataColumn.Q.name: [[0] * num_states] * num_actions
+        })
+        db.RTable.insert_one({
+            LearnerColumn.Symbol.name: s,
+            LearnerDataColumn.R.name: [[0] * num_states] * num_actions
+        })
+        db.TTable.insert_one({
+            LearnerColumn.Symbol.name: s,
+            LearnerDataColumn.T.name: [
+                [[0] * num_states] * num_actions] * num_states
         })
 
 
