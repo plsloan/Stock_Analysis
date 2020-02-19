@@ -10,7 +10,6 @@ def calculate_adjusted_prices(df):
     called 'adj_<column name>' with the adjusted prices. This function requires
     that the DataFrame have columns with dividend and split_ratio values.
 
-
     :param df: DataFrame with raw prices along with dividend and split_ratio
         values
     :return: DataFrame with the addition of the adjusted price column
@@ -74,11 +73,9 @@ def convert_dataframe_to_document(df):
     df[StockRecordsColumn.StochasticBands.name] = stochastic_band(df)
 
     document = []
-    for i in range(len(df)):
-        record = {}
-        record[StockRecordsColumn.Date.name] = str(df.iloc[i].name)[:-9]
-        for k in df.keys():
-            record[k] = df.iloc[i][k]
+    dictionary_array = df.T.to_dict()
+    for date, record in dictionary_array.items():
+        record[StockRecordsColumn.Date.name] = str(date)[:-9]
         document.append(record)
     return document
 
