@@ -122,9 +122,9 @@ def initialize_stocks():
             ]
         }
     })
-    if db.Stocks.find_one({StockColumn.Symbol.name: "SPY"}):
+    if not db.Stocks.find_one({StockColumn.Symbol.name: "SPY"}):
         db.Stocks.insert_one({
-            StockColumn.Exchange.name: 'NYS',
+            StockColumn.Exchange.name: Exchange.NewYorkStockExchange.value,
             StockColumn.LearnerId.name: None,
             StockColumn.Name.name: 'S&P 500',
             StockColumn.RecordIds.name: None,
