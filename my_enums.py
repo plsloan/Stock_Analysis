@@ -2,12 +2,9 @@ from enum import Enum
 
 
 class Exchange(Enum):
-    AmericanStockExchange = 'ASE'
-    Bats = 'BATS'
-    Nasdaq = 'NAS'
-    Nyse = 'NYS'
-    OverTheCounter = 'OTC'
-    PacificStockExchange = 'PSE'
+    AmericanStockExchange = 'AMEX'
+    Nasdaq = 'Nasdaq'
+    NewYorkStockExchange = 'NYSE'
 
 
 class StockColumn(Enum):
