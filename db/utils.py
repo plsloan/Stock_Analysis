@@ -1,5 +1,4 @@
 from db.connect import db
-from iexfinance.refdata import get_symbols
 from my_enums import Exchange, LearnerColumn, LearnerDataColumn, StockColumn, StockRecordsColumn
 from yfinance import Ticker
 import json
@@ -85,7 +84,19 @@ def get_records_from_dataframe(df, col, value):
         print('More than one stock was matched.')
 
 
-def get_stock_symbols():
+def get_stock_dataframe():
+    import requests
+    url = 'https://financialmodelingprep.com/api/v3/search?query='
+    result = requests.get(url)
+    return pd.DataFrame(result.json())
+
+
+def get_symbols():
+    stock_df = get_stock_dataframe()
+    return stock_df.sort_values('symbol')['symbol']
+
+
+def get_symbols_db():
     return db.Stocks.distinct('Symbol')
 
 
@@ -93,29 +104,32 @@ def initialize_stocks():
     '''Clear and initialize database.'''
     # Clear db.Stocks
     db.Stocks.delete_many({})
-    # Insert exchange, symbol, and name for stocks
-    for s in get_symbols():
-        db.Stocks.insert_one({
-            StockColumn.Exchange.name: s['exchange'],
-            StockColumn.Symbol.name: s['symbol'],
-            StockColumn.Name.name: s['name'],
-            StockColumn.Records.name: []
-        })
+    # Insert initial state for stocks
+    for index, row in get_stock_dataframe().iterrows():
+        if row['exchangeShortName'] and row['name'] and row['symbol']:
+            db.Stocks.insert_one({
+                StockColumn.Exchange.name: row['exchangeShortName'].strip(),
+                StockColumn.LearnerId.name: None,
+                StockColumn.Name.name: row['name'].strip(),
+                StockColumn.RecordIds.name: None,
+                StockColumn.Symbol.name: row['symbol'].strip()
+            })
     # Remove all with exchanges that are not Nasdaq or NYSE
     db.Stocks.delete_many({
         StockColumn.Exchange.name: {
             '$nin': [
                 Exchange.Nasdaq.value,
-                Exchange.Nyse.value
+                Exchange.NewYorkStockExchange.value
             ]
         }
     })
-    if len(db.Stocks.find_one({StockColumn.Symbol.name: "SPY"})) == 0:
+    if db.Stocks.find_one({StockColumn.Symbol.name: "SPY"}):
         db.Stocks.insert_one({
             StockColumn.Exchange.name: 'NYS',
-            StockColumn.Symbol.name: 'SPY',
+            StockColumn.LearnerId.name: None,
             StockColumn.Name.name: 'S&P 500',
-            StockColumn.Records.name: []
+            StockColumn.RecordIds.name: None,
+            StockColumn.Symbol.name: 'SPY'
         })
 
 
@@ -241,7 +255,7 @@ def update_stock_records():
     '''Update all stock records from Yahoo API.'''
     from utils import convert_dataframe_to_document
 
-    for sym in get_stock_symbols():
+    for sym in get_symbols_db():
         try:
             stock = Ticker(sym).history(period='1y')
             record_doc = convert_dataframe_to_document(stock)
