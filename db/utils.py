@@ -1,5 +1,5 @@
 from db.connect import db
-from my_enums import Exchange, LearnerColumn, LearnerFunctionInputsColumn, LearnerVariablesColumn, StockColumn, StockRecordsColumn
+from helpers.my_enums import Exchange, LearnerColumn, LearnerFunctionInputsColumn, LearnerVariablesColumn, StockColumn, StockRecordsColumn
 from pymongo import DESCENDING
 from yfinance import Ticker
 import json

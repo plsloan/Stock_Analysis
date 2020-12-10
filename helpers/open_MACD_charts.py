@@ -1,7 +1,7 @@
 import pandas
 from datetime import datetime
 import webbrowser as browser
-from .my_enums import StockColumn, StockRecordsColumn
+from my_enums import StockColumn, StockRecordsColumn
 
 
 def main():

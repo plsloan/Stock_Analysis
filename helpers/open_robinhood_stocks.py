@@ -1,5 +1,5 @@
 import webbrowser as browser
-from .get_symbols import getRobinhoodSymbols
+from get_symbols import getRobinhoodSymbols
 
 
 def main():

@@ -1,6 +1,6 @@
-from ..db.connect import db
-from .get_indicators import getSMA, getEMA, getBollingerBand, getMACD, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
-from .my_enums import StockRecordsColumn
+from db.connect import db
+from helpers.get_indicators import getSMA, getEMA, getBollingerBand, getMACD, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
+from helpers.my_enums import StockRecordsColumn
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 
 
@@ -119,7 +119,7 @@ def print_time():
 def run_stock_bot():
     import textwrap
     from db.utils import delete_learners, delete_stocks, delete_stock_records, initialize_stocks, load_learners, print_stocks, update_stock_records
-    from my_enums import Exchange, LearnerColumn, LearnerFunctionInputsColumn, LearnerVariablesColumn
+    from helpers.my_enums import Exchange, LearnerColumn, LearnerFunctionInputsColumn, LearnerVariablesColumn
 
     commands = textwrap.dedent('''
     Commands
