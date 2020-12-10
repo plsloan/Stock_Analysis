@@ -1,5 +1,5 @@
 import numpy as np
-from my_enums import StockRecordsColumn
+from .my_enums import StockRecordsColumn
 
 
 def getSMA(data, span, get_last=False):

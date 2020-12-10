@@ -1,7 +1,8 @@
 from db.utils import get_data
-from QLearner import QLearner
 from marketsimcode import compute_portvals
-from get_indicators import get_daily_returns, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
+from .helpers.QLearner import QLearner
+from .helpers.get_indicators import get_daily_returns, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
+
 import datetime as dt
 import numpy as np
 import pandas as pd

@@ -5,7 +5,7 @@ from pandas_datareader import data as web
 from datetime import datetime
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 
-from get_indicators import getEMA, getRSI
+from .get_indicators import getEMA, getRSI
 
 
 def getRobinhoodSymbols():

@@ -1,6 +1,6 @@
-from db.connect import db
-from get_indicators import getSMA, getEMA, getBollingerBand, getMACD, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
-from my_enums import StockRecordsColumn
+from ..db.connect import db
+from .get_indicators import getSMA, getEMA, getBollingerBand, getMACD, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
+from .my_enums import StockRecordsColumn
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 
 

@@ -1,5 +1,5 @@
 import webbrowser as browser
-from get_symbols import getWatchlistSymbols
+from .get_symbols import getWatchlistSymbols
 
 
 def main():

@@ -16,7 +16,6 @@ from db.utils import get_data
 import pandas as pd
 import numpy as np
 import datetime as dt
-import os
 
 
 def compute_portvals(trades_df, start_date, end_date, start_val=100000, commission=9.95, impact=0.005):
