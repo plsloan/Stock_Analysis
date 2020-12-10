@@ -3,8 +3,8 @@ from enum import Enum
 
 class Exchange(Enum):
     AmericanStockExchange = 'AMEX'
-    Nasdaq = 'Nasdaq'
-    NewYorkStockExchange = 'NYSE'
+    Nasdaq = 'NAS'
+    NewYorkStockExchange = 'NYS'
 
 
 class StockColumn(Enum):

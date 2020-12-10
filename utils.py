@@ -133,6 +133,7 @@ def run_stock_bot():
      * update records - update stock records
      * cls - clears terminal
      * help - prints available commands
+     * exit - exit app
     ''')
 
     print(commands)
@@ -189,6 +190,7 @@ def run_stock_bot():
             print()
         elif all(item in user_input for item in ['train', 'learners']):
             pass
+            # pickle model and save
         elif user_input == ['update', 'records']:
             try:
                 update_stock_records()
