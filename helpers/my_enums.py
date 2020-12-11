@@ -2,9 +2,8 @@ from enum import Enum
 
 
 class Exchange(Enum):
-    AmericanStockExchange = 'AMEX'
-    Nasdaq = 'NAS'
-    NewYorkStockExchange = 'NYS'
+    Nasdaq = 'NASDAQ'
+    NewYorkStockExchange = 'NYSE'
 
 
 class StockColumn(Enum):
@@ -12,8 +11,6 @@ class StockColumn(Enum):
     Exchange = 1
     Symbol = 2
     Name = 3
-    RecordIds = 4
-    LearnerId = 5
 
 
 class StockRecordsColumn(Enum):
@@ -41,30 +38,3 @@ class StockRecordsColumn(Enum):
     StochasticBands = 21
     StockSplits = 22
     Volume = 23
-
-
-class LearnerColumn(Enum):
-    LearnerInputsId = 0
-    LearnerVariablesId = 1
-    Symbol = 2
-
-
-class LearnerFunctionInputsColumn(Enum):
-    alpha = 0
-    bins = 1
-    dyna = 2
-    gamma = 3
-    impact = 4
-    num_actions = 5
-    num_states = 6
-    radr = 7
-    rar = 8
-    verbose = 9
-
-
-class LearnerVariablesColumn(Enum):
-    a = 10
-    s = 11
-    Q = 12
-    R = 13
-    T = 14

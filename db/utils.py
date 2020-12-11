@@ -1,21 +1,8 @@
 from db.connect import db
-from helpers.my_enums import Exchange, LearnerColumn, LearnerFunctionInputsColumn, LearnerVariablesColumn, StockColumn, StockRecordsColumn
+from helpers.my_enums import Exchange, StockColumn, StockRecordsColumn
 from pymongo import DESCENDING
 from yfinance import Ticker
-import json
 import pandas as pd
-import numpy as np
-
-
-def delete_learners():
-    '''Deletes all stock learners.'''
-    try:
-        db.Learners.delete_many({})
-        db.LearnerFunctionInputs.delete_many({})
-        db.LearnerVariables.delete_many({})
-        print('Cleared all stock learners.\n')
-    except:
-        print('An error occurred when clearing stock learners.\n')
 
 
 def delete_stocks():
@@ -98,7 +85,7 @@ def get_records_from_dataframe(df, col, value):
 
 def get_stock_dataframe():
     import requests
-    url = 'https://financialmodelingprep.com/api/v3/search?query='
+    url = 'https://financialmodelingprep.com/api/v3/search?apikey=741b15c92add15628eb47e3586e60b2c&query='
     result = requests.get(url)
     return pd.DataFrame(result.json())
 
@@ -116,16 +103,16 @@ def initialize_stocks():
     '''Clear and initialize database.'''
     # Clear db.Stocks
     db.Stocks.delete_many({})
+
     # Insert initial state for stocks
     for index, row in get_stock_dataframe().iterrows():
-        if row['exchangeShortName'] and row['name'] and row['symbol']:
+        if row['exchangeShortName'] and row['name'] and row['symbol'] and ('-' not in row['symbol'] or '.' not in row['symbol']):
             db.Stocks.insert_one({
                 StockColumn.Exchange.name: row['exchangeShortName'].strip(),
-                StockColumn.LearnerId.name: None,
                 StockColumn.Name.name: row['name'].strip(),
-                StockColumn.RecordIds.name: None,
                 StockColumn.Symbol.name: row['symbol'].strip()
             })
+
     # Remove all with exchanges that are not Nasdaq or NYSE
     db.Stocks.delete_many({
         StockColumn.Exchange.name: {
@@ -135,103 +122,13 @@ def initialize_stocks():
             ]
         }
     })
+
     if not db.Stocks.find_one({StockColumn.Symbol.name: "SPY"}):
         db.Stocks.insert_one({
             StockColumn.Exchange.name: Exchange.NewYorkStockExchange.value,
-            StockColumn.LearnerId.name: None,
             StockColumn.Name.name: 'S&P 500',
-            StockColumn.RecordIds.name: None,
             StockColumn.Symbol.name: 'SPY'
         })
-
-
-def initialize_learners():
-    '''Clear and initialize learners'''
-    from bson.binary import Binary
-    import pickle
-
-    db.Learners.delete_many({})
-    db.LearnerFunctionInputs.delete_many({})
-    db.LearnerVariablesColumn.delete_many({})
-    num_indicators = 4
-    num_states = (int)('9' * num_indicators)
-    num_actions = 3
-    try:
-        for s in get_symbols_db():
-            db.LearnerFunctionInputs.insert_one({
-                LearnerFunctionInputsColumn.alpha.name: 0.2,
-                LearnerFunctionInputsColumn.bins.name: 8,
-                LearnerFunctionInputsColumn.dyna.name: 200,
-                LearnerFunctionInputsColumn.gamma.name: 0.9,
-                LearnerFunctionInputsColumn.impact.name: 0.0,
-                LearnerFunctionInputsColumn.num_actions.name: num_actions,
-                LearnerFunctionInputsColumn.num_states.name: num_states,
-                LearnerFunctionInputsColumn.radr.name: 0.99,
-                LearnerFunctionInputsColumn.rar.name: 0.5,
-                LearnerFunctionInputsColumn.verbose.name: False
-            })
-            function_inputs_id = db.LearnerFunctionInputs.find(
-                {}).sort('_id', DESCENDING).limit(1)[0]['_id']
-
-            db.LearnerVariables.insert_one({
-                LearnerVariablesColumn.a.name: 0,
-                LearnerVariablesColumn.s.name: 0,
-                LearnerVariablesColumn.Q.name: None,
-                LearnerVariablesColumn.R.name: None,
-                LearnerVariablesColumn.T.name: None
-            })
-            variables_id = db.LearnerVariables.find(
-                {}).sort('_id', DESCENDING).limit(1)[0]['_id']
-
-            db.Learners.insert_one({
-                LearnerColumn.LearnerInputsId.name: function_inputs_id,
-                LearnerColumn.LearnerVariablesId.name: variables_id,
-                LearnerColumn.Symbol.name: s
-            })
-            # db.QTable.insert_one({
-            #     LearnerColumn.Symbol.name: s,
-            #     LearnerVariablesColumn.Q.name: [[0] * num_states] * num_actions
-            # })
-            # db.RTable.insert_one({
-            #     LearnerColumn.Symbol.name: s,
-            #     LearnerVariablesColumn.R.name: [[0] * num_states] * num_actions
-            # })
-            # db.TTable.insert_one({
-            #     LearnerColumn.Symbol.name: s,
-            #     LearnerVariablesColumn.T.name: [
-            #         [[0] * num_states] * num_actions] * num_states
-            # })
-    except:
-        print('Could not initialize learners')
-
-
-def load_learners():
-    from strategy_learner import StrategyLearner
-
-    documents = db.Learners.find({})
-    learners = []
-    for d in documents:
-        data = d[LearnerColumn.Data.name]
-        this_learner = StrategyLearner(
-            bins=data[LearnerFunctionInputsColumn.bins.name],
-            impact=data[LearnerFunctionInputsColumn.impact.name],
-            verbose=data[LearnerFunctionInputsColumn.verbose.name],
-            alpha=data[LearnerFunctionInputsColumn.alpha.name],
-            dyna=data[LearnerFunctionInputsColumn.dyna.name],
-            gamma=data[LearnerFunctionInputsColumn.gamma.name],
-            num_actions=data[LearnerFunctionInputsColumn.num_actions.name],
-            num_states=data[LearnerFunctionInputsColumn.num_states.name],
-            rar=data[LearnerFunctionInputsColumn.rar.name],
-            radr=data[LearnerFunctionInputsColumn.radr.name]
-        )
-        this_learner.learner.a = data[LearnerVariablesColumn.a.name]
-        this_learner.learner.s = data[LearnerVariablesColumn.s.name]
-        this_learner.learner.Q = data[LearnerVariablesColumn.Q.name]
-        this_learner.learner.R = data[LearnerVariablesColumn.R.name]
-        this_learner.learner.T = data[LearnerVariablesColumn.T.name]
-        this_learner.learner.verbose = data[LearnerFunctionInputsColumn.verbose.name]
-        learners.append(this_learner)
-    return learners
 
 
 def print_stocks(exchange=None):
@@ -242,7 +139,7 @@ def print_stocks(exchange=None):
     ----------
         exchange (optional)
     '''
-    if exchange:
+    if exchange is not None:
         stocks = db.Stocks.find({StockColumn.Exchange.name: exchange.value})
         print('\n' + exchange.name)
         print('---------------------\n')
@@ -258,24 +155,6 @@ def print_stocks(exchange=None):
             for s in stocks:
                 print(s[StockColumn.Symbol.name] +
                       ' - ' + s[StockColumn.Name.name])
-
-
-def query_as_dataframe(query_results):
-    '''
-    Parameters
-    ----------
-        query_results
-            results from mongodb query
-            example - db.Stocks.find({})
-
-    Returns
-    -------
-        df
-            query_results as pandas DataFrame
-    '''
-    df = pd.DataFrame(list(query_results))
-    del df[StockColumn._id.name]
-    return df
 
 
 def update_stock_records():

@@ -81,7 +81,7 @@ def convert_dataframe_to_document(df):
 
 
 def generate_learner(learner):
-    from QLearner import QLearner
+    from helpers.QLearner import QLearner
     new_learner = QLearner(
         num_states=learner.num_states,
         num_actions=learner.num_actions,
@@ -92,8 +92,6 @@ def generate_learner(learner):
         dyna=learner.dyna,
         verbose=learner.verbose
     )
-
-    # db.LearnerData
 
     return new_learner
 
@@ -118,18 +116,16 @@ def print_time():
 
 def run_stock_bot():
     import textwrap
-    from db.utils import delete_learners, delete_stocks, delete_stock_records, initialize_stocks, load_learners, print_stocks, update_stock_records
-    from helpers.my_enums import Exchange, LearnerColumn, LearnerFunctionInputsColumn, LearnerVariablesColumn
+    from db.utils import delete_stocks, delete_stock_records, print_stocks, update_stock_records
+    from helpers.my_enums import Exchange
 
     commands = textwrap.dedent('''
     Commands
     --------
-     * delete learners - delete all stock learners
      * delete records - delete all stock records
      * delete stocks - delete all stock
      * get suggestions - prints all
      * print stocks - prints stocks from a given exchange
-     * train learners - trains all learners
      * update records - update stock records
      * cls - clears terminal
      * help - prints available commands
@@ -140,20 +136,11 @@ def run_stock_bot():
 
     user_input = get_command()
     while user_input != ['exit']:
-        if user_input == ['delete', 'learners']:
-            user_input = input(textwrap.dedent('''
-                WARNING: This will delete all stocks learners and their data from the database
-                Are you sure you want to delete all the stock learners? ''')).strip().lower()
-            if user_input[0] == 'y':
-                delete_learners()
-                pass
-            else:
-                print()
-        elif user_input == ['delete', 'stocks']:
+        if user_input == ['delete', 'stocks']:
             user_input = input(textwrap.dedent('''
                 WARNING: This will delete all stocks and their records from the database
                 Are you sure you want to delete all the stocks? ''')).strip().lower()
-            if user_input[0] == 'y':
+            if len(user_input) > 0 and user_input[0] == 'y':
                 delete_stocks()
                 pass
             else:
@@ -162,7 +149,7 @@ def run_stock_bot():
             user_input = input(textwrap.dedent('''
                 WARNING: This will delete all stocks and their records from the database
                 Are you sure you want to delete all the stocks? ''')).strip().lower()
-            if user_input[0] == 'y':
+            if len(user_input) > 0 and user_input[0] == 'y':
                 delete_stock_records()
                 pass
             else:
@@ -188,9 +175,6 @@ def run_stock_bot():
                 except:
                     print('Exchange not found.')
             print()
-        elif all(item in user_input for item in ['train', 'learners']):
-            pass
-            # pickle model and save
         elif user_input == ['update', 'records']:
             try:
                 update_stock_records()
