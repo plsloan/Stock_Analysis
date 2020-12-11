@@ -11,6 +11,7 @@ class StockColumn(Enum):
     Exchange = 1
     Symbol = 2
     Name = 3
+    Records = 4
 
 
 class StockRecordsColumn(Enum):

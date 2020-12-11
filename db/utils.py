@@ -164,6 +164,8 @@ def update_stock_records():
     for sym in get_symbols_db():
         try:
             stock = Ticker(sym).history(period='1y')
+            if len(stock) == 0:
+                raise Exception('No records for this stock: ' + sym + '.')
             record_doc = convert_dataframe_to_document(stock)
             db.Stocks.update_one(
                 {StockColumn.Symbol.name: sym},
