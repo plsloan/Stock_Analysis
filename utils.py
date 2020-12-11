@@ -1,6 +1,7 @@
 from db.connect import db
 from helpers.get_indicators import getSMA, getEMA, getBollingerBand, getMACD, price_sma_ratio, price_ema_ratio, bollinger_percentage, stochastic_band
 from helpers.my_enums import StockRecordsColumn
+from helpers.StockNet import StockNet
 from progressbar import ProgressBar, Bar, Percentage, ETA, FileTransferSpeed
 
 
@@ -120,16 +121,17 @@ def run_stock_bot():
     from helpers.my_enums import Exchange
 
     commands = textwrap.dedent('''
-    Commands
-    --------
-     * delete records - delete all stock records
-     * delete stocks - delete all stock
-     * get suggestions - prints all
-     * print stocks - prints stocks from a given exchange
-     * update records - update stock records
-     * cls - clears terminal
-     * help - prints available commands
-     * exit - exit app
+        Commands
+        --------
+        * delete records - delete all stock records
+        * delete stocks - delete all stock
+        * get suggestions - prints all
+        * print stocks - prints stocks from a given exchange
+        * train model - train machine learning model
+        * update records - update stock records
+        * cls - clears terminal
+        * help - prints available commands
+        * exit - exit app
     ''')
 
     print(commands)
@@ -175,6 +177,8 @@ def run_stock_bot():
                 except:
                     print('Exchange not found.')
             print()
+        elif user_input == ['train', 'model']:
+            model = StockNet()
         elif user_input == ['update', 'records']:
             try:
                 update_stock_records()
